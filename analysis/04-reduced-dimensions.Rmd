@@ -273,7 +273,7 @@ sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 21, min_dist = 0.2)
 ```{r, fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
 patchwork::wrap_plots(plt, ncol = 2)
 ```
@@ -283,7 +283,7 @@ patchwork::wrap_plots(plt, ncol = 2)
 ```{r, fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
-plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
 patchwork::wrap_plots(plt, ncol = 2)
 ```
@@ -293,7 +293,7 @@ patchwork::wrap_plots(plt, ncol = 2)
 ```{r, fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
-plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
 patchwork::wrap_plots(plt, ncol = 2)
 ```
