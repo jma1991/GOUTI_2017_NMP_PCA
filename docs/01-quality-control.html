@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge726f77"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> e726f77 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong6783cb3"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 6783cb3 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstronge726f77" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong6783cb3" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version e726f77. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 6783cb3. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -573,6 +573,7 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
+    Ignored:    analysis/cache/
     Ignored:    pipeline/
 
 Untracked files:
@@ -636,6 +637,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+6783cb3
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+f9822f9
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -847,7 +882,7 @@ rownames(sce) &lt;- rowData(sce)$gene_id</code></pre>
 </div>
 <div id="exploration" class="section level2">
 <h2>Exploration</h2>
-<p>We will begin by exploring the dataset which contains 128 cells and 53700 genes.</p>
+<p>We will begin by exploring the dataset which contains cells and 53700 genes.</p>
 </div>
 <div id="metrics" class="section level2">
 <h2>Metrics</h2>
@@ -866,7 +901,7 @@ dat &lt;- makePerCellDF(sce)</code></pre>
   plotColData(sce, x = &quot;stage&quot;, y = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, x = &quot;stage&quot;, y = &quot;altexps_spike_percent&quot;) + ggtitle(&quot;Spike percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
 Past versions of unnamed-chunk-9-1.png
@@ -922,8 +957,8 @@ sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;)</code></pre>
   plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;MT percent&quot;),
   plotPCA(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; coord_fixed(1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
 Past versions of unnamed-chunk-11-1.png
@@ -981,8 +1016,8 @@ James Ashmore
   plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;MT percent&quot;),
   plotTSNE(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
 Past versions of unnamed-chunk-12-1.png
@@ -1040,8 +1075,8 @@ James Ashmore
   plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;MT percent&quot;),
   plotUMAP(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;stage&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
 Past versions of unnamed-chunk-13-1.png
@@ -1103,7 +1138,7 @@ sce$manual_discard &lt;- dat$low_lib_size | dat$low_n_features | dat$high_subset
   plotColData(sce, x = &quot;stage&quot;, y = &quot;subsets_MT_percent&quot;, colour_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, x = &quot;stage&quot;, y = &quot;altexps_spike_percent&quot;, colour_by = &quot;manual_discard&quot;) + ggtitle(&quot;Spike percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
 Past versions of unnamed-chunk-15-1.png
@@ -1161,8 +1196,8 @@ James Ashmore
   plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotPCA(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; coord_fixed(1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
 Past versions of unnamed-chunk-16-1.png
@@ -1220,8 +1255,8 @@ James Ashmore
   plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotTSNE(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
 Past versions of unnamed-chunk-17-1.png
@@ -1279,8 +1314,8 @@ James Ashmore
   plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotUMAP(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
 Past versions of unnamed-chunk-18-1.png
@@ -1333,7 +1368,7 @@ sce$adaptive_discard &lt;- dat$discard</code></pre>
   plotColData(sce, x = &quot;stage&quot;, y = &quot;subsets_MT_percent&quot;, colour_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, x = &quot;stage&quot;, y = &quot;altexps_spike_percent&quot;, colour_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Spike percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
 Past versions of unnamed-chunk-20-1.png
@@ -1391,8 +1426,8 @@ James Ashmore
   plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotPCA(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; coord_fixed(1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
 Past versions of unnamed-chunk-21-1.png
@@ -1450,8 +1485,8 @@ James Ashmore
   plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotTSNE(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
 Past versions of unnamed-chunk-22-1.png
@@ -1509,8 +1544,8 @@ James Ashmore
   plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotUMAP(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-23-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
 Past versions of unnamed-chunk-23-1.png
@@ -1564,7 +1599,7 @@ sce$outlier_discard &lt;- out</code></pre>
   plotColData(sce, x = &quot;stage&quot;, y = &quot;subsets_MT_percent&quot;, colour_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, x = &quot;stage&quot;, y = &quot;altexps_spike_percent&quot;, colour_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Spike percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
 Past versions of unnamed-chunk-25-1.png
@@ -1622,8 +1657,8 @@ James Ashmore
   plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotPCA(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; coord_fixed(1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
 Past versions of unnamed-chunk-26-1.png
@@ -1681,8 +1716,8 @@ James Ashmore
   plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotTSNE(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
 Past versions of unnamed-chunk-27-1.png
@@ -1740,8 +1775,8 @@ James Ashmore
   plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotUMAP(sce, colour_by = &quot;altexps_spike_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Spike percent&quot;),
   ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" width="960" style="display: block; margin: auto;" /></p>
+) &amp; theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
 Past versions of unnamed-chunk-28-1.png
