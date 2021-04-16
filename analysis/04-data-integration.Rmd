@@ -1,0 +1,181 @@
+---
+title: "Data integration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/04-data-integration.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(batchelor)
+library(EnsDb.Mmusculus.v79)
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(pheatmap)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("output/03-feature-selection.rds")
+```
+
+## Integration
+
+Retrieve highly variable genes:
+
+```{r}
+hvg <- rownames(sce)[rowData(sce)$selected]
+```
+
+Perform scaling normalization:
+
+```{r}
+sce <- multiBatchNorm(sce, batch = sce$stage)
+```
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(0111110100)
+
+mnn <- correctExperiments(
+  sce,
+  batch = sce$stage,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(merge.order = c("E9.5", "E8.5"), get.variance = TRUE)
+)
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var, na.rm = TRUE), length.out = 101)
+
+pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+
+com$membership <- as.factor(com$membership)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r}
+tab <- table(Cluster = fct, Batch = com$membership)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Visualize the corrected PCA:
+
+```{r}
+ggcells(mnn, aes(corrected.1, corrected.2, colour = com$membership)) + 
+  geom_point(size = 1) + 
+  scale_colour_brewer(name = "Stage", palette = "Set1") + 
+  labs(x = "PCA 1", y = "PCA 2") + 
+  facet_wrap(~ batch) + 
+  theme_no_axes() + 
+  coord_fixed()
+```
+
+Perform TSNE on the corrected PCA matrix:
+
+```{r}
+set.seed(1111100110)
+
+mnn <- runTSNE(mnn, dimred = "corrected")
+```
+
+Visualize the corrected PCA using a TSNE plot:
+
+```{r}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = com$membership)) +
+  geom_point(size = 1) + 
+  scale_colour_brewer(name = "Stage", palette = "Set1") + 
+  labs(x = "TSNE 1", y = "TSNE 2") +
+  facet_wrap(~ batch) +
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Perform UMAP on the corrected PCA matrix:
+
+```{r}
+set.seed(1001010111)
+
+mnn <- runUMAP(mnn, dimred = "corrected")
+```
+
+Visualize the corrected PCA using a UMAP plot:
+
+```{r}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = com$membership)) +
+  geom_point(size = 1) +
+  scale_colour_brewer(name = "Stage", palette = "Set1") + 
+  labs(x = "UMAP 1", y = "UMAP 2") +
+  facet_wrap(~ batch) +
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/04-data-integration.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
