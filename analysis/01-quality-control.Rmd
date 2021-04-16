@@ -23,16 +23,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
+
+```{r}
+library(EnsDb.Mmusculus.v79)
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
 
 ```{r}
 library(eulerr)
 library(patchwork)
 library(robustbase)
-library(scater)
-library(scran)
-library(scuttle)
-library(EnsDb.Mmusculus.v79)
 ```
 
 Read experiment data:
@@ -44,17 +49,11 @@ sce <- readRDS("data/sce.rds")
 Remove version number from gene identifier:
 
 ```{r}
-ids <- strsplit(
-  x = rowData(sce)$gene_id,
-  split = ".",
-  fixed = TRUE
-)
+ids <- strsplit(rowData(sce)$gene_id, split = ".", fixed = TRUE)
 
-ids <- sapply(ids, .subset, 1)
+rowData(sce)$gene_id <- sapply(ids, .subset, 1)
 
-rowData(sce)$gene_id <- ids
-
-rownames(sce) <- ids
+rownames(sce) <- rowData(sce)$gene_id
 ```
 
 Make feature names unique:
@@ -63,15 +62,9 @@ Make feature names unique:
 rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
 ```
 
-Make sample names unique:
-
-```{r}
-colnames(sce) <- uniquifyFeatureNames(colData(sce)$cell, colData(sce)$sample)
-```
-
 ## Exploration
 
-We begin by exploring the dataset which contains `r ncol(sce)` cells and `r nrow(sce)` genes.
+We will begin by exploring the dataset which contains `r ncol(sce)` cells and `r nrow(sce)` genes.
 
 ## Metrics
 
@@ -80,15 +73,15 @@ Identify mitochondrial genes:
 ```{r}
 ids <- keys(EnsDb.Mmusculus.v79, keytype = "GENEID", filter = SeqNameFilter("MT"))
 
-mit <- which(rowData(sce)$gene_id %in% ids)
+idx <- which(rowData(sce)$gene_id %in% ids)
 ```
 
 Compute QC metrics for each cell:
 
 ```{r}
-sce <- addPerCellQC(sce, subsets = list(MT = mit))
+sce <- addPerCellQC(sce, subsets = list(MT = idx))
 
-dat <- as.data.frame(colData(sce))
+dat <- makePerCellDF(sce)
 ```
 
 Inspect the distributions of QC metrics:
