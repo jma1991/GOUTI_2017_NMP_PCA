@@ -101,7 +101,7 @@ com$membership <- as.factor(com$membership)
 Tabulate number of cells from multiple batches within each cluster:
 
 ```{r}
-tab <- table(Cluster = fct, Batch = com$membership)
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
 
