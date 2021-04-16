@@ -23,19 +23,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
 library(BiocSingular)
+library(EnsDb.Mmusculus.v79)
 library(org.Mm.eg.db)
-library(eulerr)
-library(pheatmap)
-library(scales)
 library(scater)
 library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(eulerr)
 library(msigdbr)
-library(EnsDb.Mmusculus.v79)
 library(patchwork)
+library(pheatmap)
+library(scales)
 ```
 
 Read experiment data:
