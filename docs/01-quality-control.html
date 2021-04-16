@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong477349a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 477349a </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge726f77"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> e726f77 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong477349a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstronge726f77" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 477349a. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version e726f77. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -573,15 +573,19 @@ Note that you need to be careful to ensure that all relevant files for the analy
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-    Ignored:    analysis/cache/
     Ignored:    pipeline/
 
 Untracked files:
     Untracked:  _workflowr.R
-    Untracked:  analysis/08-marker-detection.Rmd
-    Untracked:  analysis/09-cell-annotation.Rmd
-    Untracked:  analysis/10-atlas-integration.Rmd
+    Untracked:  analysis/04-data-integration.Rmd
+    Untracked:  analysis/05-reduced-dimensions.Rmd
+    Untracked:  analysis/06-clustering.Rmd
+    Untracked:  analysis/07-doublet-detection.Rmd
+    Untracked:  analysis/08-cell-cycle.Rmd
+    Untracked:  analysis/09-marker-detection.Rmd
+    Untracked:  analysis/10-cell-annotation.Rmd
     Untracked:  analysis/interactive.Rmd
+    Untracked:  analysis/rename.sh
     Untracked:  renv.lock
     Untracked:  renv/
 
@@ -589,6 +593,10 @@ Unstaged changes:
     Modified:   .Rprofile
     Modified:   .gitignore
     Modified:   _workflowr.yml
+    Deleted:    analysis/04-reduced-dimensions.Rmd
+    Deleted:    analysis/05-clustering.Rmd
+    Deleted:    analysis/06-doublet-detection.Rmd
+    Deleted:    analysis/07-cell-cycle.Rmd
     Modified:   analysis/_site.yml
 
 </code></pre>
@@ -628,6 +636,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+e726f77
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+90b8dc4
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -783,47 +825,40 @@ Build
   message    = FALSE,
   warning    = FALSE
 )</code></pre>
-<p>Load required packages:</p>
-<pre class="r"><code>library(eulerr)
-library(patchwork)
-library(robustbase)
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(EnsDb.Mmusculus.v79)
 library(scater)
 library(scran)
-library(scuttle)
-library(EnsDb.Mmusculus.v79)</code></pre>
+library(scuttle)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(eulerr)
+library(patchwork)
+library(robustbase)</code></pre>
 <p>Read experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;data/sce.rds&quot;)</code></pre>
 <p>Remove version number from gene identifier:</p>
-<pre class="r"><code>ids &lt;- strsplit(
-  x = rowData(sce)$gene_id,
-  split = &quot;.&quot;,
-  fixed = TRUE
-)
+<pre class="r"><code>ids &lt;- strsplit(rowData(sce)$gene_id, split = &quot;.&quot;, fixed = TRUE)
 
-ids &lt;- sapply(ids, .subset, 1)
+rowData(sce)$gene_id &lt;- sapply(ids, .subset, 1)
 
-rowData(sce)$gene_id &lt;- ids
-
-rownames(sce) &lt;- ids</code></pre>
+rownames(sce) &lt;- rowData(sce)$gene_id</code></pre>
 <p>Make feature names unique:</p>
 <pre class="r"><code>rownames(sce) &lt;- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)</code></pre>
-<p>Make sample names unique:</p>
-<pre class="r"><code>colnames(sce) &lt;- uniquifyFeatureNames(colData(sce)$cell, colData(sce)$sample)</code></pre>
 </div>
 <div id="exploration" class="section level2">
 <h2>Exploration</h2>
-<p>We begin by exploring the dataset which contains cells and 53700 genes.</p>
+<p>We will begin by exploring the dataset which contains 128 cells and 53700 genes.</p>
 </div>
 <div id="metrics" class="section level2">
 <h2>Metrics</h2>
 <p>Identify mitochondrial genes:</p>
 <pre class="r"><code>ids &lt;- keys(EnsDb.Mmusculus.v79, keytype = &quot;GENEID&quot;, filter = SeqNameFilter(&quot;MT&quot;))
 
-mit &lt;- which(rowData(sce)$gene_id %in% ids)</code></pre>
+idx &lt;- which(rowData(sce)$gene_id %in% ids)</code></pre>
 <p>Compute QC metrics for each cell:</p>
-<pre class="r"><code>sce &lt;- addPerCellQC(sce, subsets = list(MT = mit))
+<pre class="r"><code>sce &lt;- addPerCellQC(sce, subsets = list(MT = idx))
 
-dat &lt;- as.data.frame(colData(sce))</code></pre>
+dat &lt;- makePerCellDF(sce)</code></pre>
 <p>Inspect the distributions of QC metrics:</p>
 <pre class="r"><code>wrap_plots(
   plotColData(sce, x = &quot;stage&quot;, y = &quot;sum&quot;) + scale_y_log10() + ggtitle(&quot;Total count&quot;),
@@ -2028,81 +2063,81 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
+[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
- [1] EnsDb.Mmusculus.v79_2.99.0  ensembldb_2.14.0           
- [3] AnnotationFilter_1.14.0     GenomicFeatures_1.42.1     
- [5] AnnotationDbi_1.52.0        scuttle_1.0.4              
- [7] scran_1.18.5                scater_1.18.5              
- [9] ggplot2_3.3.3               SingleCellExperiment_1.12.0
-[11] SummarizedExperiment_1.20.0 Biobase_2.50.0             
-[13] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
-[15] IRanges_2.24.1              S4Vectors_0.28.1           
-[17] BiocGenerics_0.36.0         MatrixGenerics_1.2.1       
-[19] matrixStats_0.58.0          robustbase_0.93-7          
-[21] patchwork_1.1.1             eulerr_6.1.0               
+ [1] robustbase_0.93-7           patchwork_1.1.1            
+ [3] eulerr_6.1.0                scuttle_1.0.4              
+ [5] scran_1.18.5                scater_1.18.5              
+ [7] ggplot2_3.3.3               SingleCellExperiment_1.12.0
+ [9] SummarizedExperiment_1.20.0 MatrixGenerics_1.2.1       
+[11] matrixStats_0.58.0          EnsDb.Mmusculus.v79_2.99.0 
+[13] ensembldb_2.14.0            AnnotationFilter_1.14.0    
+[15] GenomicFeatures_1.42.1      AnnotationDbi_1.52.0       
+[17] Biobase_2.50.0              GenomicRanges_1.42.0       
+[19] GenomeInfoDb_1.26.2         IRanges_2.24.1             
+[21] S4Vectors_0.28.1            BiocGenerics_0.36.0        
 [23] workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
-  [1] BiocFileCache_1.14.0      igraph_1.2.6             
-  [3] lazyeval_0.2.2            polylabelr_0.2.0         
-  [5] splines_4.0.2             BiocParallel_1.24.1      
-  [7] digest_0.6.27             htmltools_0.5.1.1        
-  [9] viridis_0.5.1             magrittr_2.0.1           
- [11] memoise_2.0.0             limma_3.46.0             
- [13] Biostrings_2.58.0         askpass_1.1              
- [15] prettyunits_1.1.1         colorspace_2.0-0         
- [17] blob_1.2.1                rappdirs_0.3.3           
- [19] xfun_0.21                 dplyr_1.0.4              
- [21] crayon_1.4.1              RCurl_1.98-1.2           
- [23] glue_1.4.2                polyclip_1.10-0          
- [25] gtable_0.3.0              zlibbioc_1.36.0          
- [27] XVector_0.30.0            DelayedArray_0.16.1      
- [29] BiocSingular_1.6.0        DEoptimR_1.0-8           
- [31] scales_1.1.1              DBI_1.1.1                
- [33] edgeR_3.32.1              Rcpp_1.0.6               
- [35] viridisLite_0.3.0         progress_1.2.2           
- [37] dqrng_0.2.1               bit_4.0.4                
- [39] rsvd_1.0.3                httr_1.4.2               
- [41] FNN_1.1.3                 RColorBrewer_1.1-2       
- [43] ellipsis_0.3.1            pkgconfig_2.0.3          
- [45] XML_3.99-0.5              farver_2.0.3             
- [47] uwot_0.1.10               dbplyr_2.1.0             
- [49] locfit_1.5-9.4            tidyselect_1.1.0         
- [51] labeling_0.4.2            rlang_0.4.10             
- [53] later_1.1.0.1             munsell_0.5.0            
- [55] tools_4.0.2               cachem_1.0.4             
- [57] generics_0.1.0            RSQLite_2.2.3            
- [59] evaluate_0.14             stringr_1.4.0            
- [61] fastmap_1.1.0             yaml_2.2.1               
- [63] knitr_1.31                bit64_4.0.5              
- [65] fs_1.5.0                  purrr_0.3.4              
- [67] nlme_3.1-152              sparseMatrixStats_1.2.1  
- [69] whisker_0.4               xml2_1.3.2               
- [71] biomaRt_2.46.3            compiler_4.0.2           
- [73] beeswarm_0.2.3            curl_4.3                 
- [75] tibble_3.0.6              statmod_1.4.35           
- [77] stringi_1.5.3             highr_0.8                
- [79] RSpectra_0.16-0           lattice_0.20-41          
- [81] bluster_1.0.0             ProtGenerics_1.22.0      
- [83] Matrix_1.3-2              vctrs_0.3.6              
- [85] pillar_1.4.7              lifecycle_1.0.0          
- [87] BiocNeighbors_1.8.2       cowplot_1.1.1            
- [89] bitops_1.0-6              irlba_2.3.3              
- [91] httpuv_1.5.5              rtracklayer_1.50.0       
- [93] R6_2.5.0                  promises_1.2.0.1         
- [95] renv_0.12.5               gridExtra_2.3            
- [97] vipor_0.4.5               codetools_0.2-18         
- [99] assertthat_0.2.1          openssl_1.4.3            
-[101] rprojroot_2.0.2           withr_2.4.1              
-[103] GenomicAlignments_1.26.0  Rsamtools_2.6.0          
-[105] GenomeInfoDbData_1.2.4    mgcv_1.8-34              
-[107] hms_1.0.0                 grid_4.0.2               
-[109] beachmat_2.6.4            rmarkdown_2.6            
-[111] DelayedMatrixStats_1.12.3 Rtsne_0.15               
-[113] git2r_0.28.0              ggbeeswarm_0.6.0         </code></pre>
+  [1] Rtsne_0.15                ggbeeswarm_0.6.0         
+  [3] colorspace_2.0-0          ellipsis_0.3.1           
+  [5] rprojroot_2.0.2           bluster_1.0.0            
+  [7] XVector_0.30.0            BiocNeighbors_1.8.2      
+  [9] fs_1.5.0                  farver_2.0.3             
+ [11] bit64_4.0.5               RSpectra_0.16-0          
+ [13] xml2_1.3.2                splines_4.0.2            
+ [15] codetools_0.2-18          sparseMatrixStats_1.2.1  
+ [17] cachem_1.0.4              knitr_1.31               
+ [19] polyclip_1.10-0           Rsamtools_2.6.0          
+ [21] dbplyr_2.1.0              uwot_0.1.10              
+ [23] compiler_4.0.2            httr_1.4.2               
+ [25] dqrng_0.2.1               assertthat_0.2.1         
+ [27] Matrix_1.3-2              fastmap_1.1.0            
+ [29] lazyeval_0.2.2            limma_3.46.0             
+ [31] later_1.1.0.1             BiocSingular_1.6.0       
+ [33] htmltools_0.5.1.1         prettyunits_1.1.1        
+ [35] tools_4.0.2               rsvd_1.0.3               
+ [37] igraph_1.2.6              gtable_0.3.0             
+ [39] glue_1.4.2                GenomeInfoDbData_1.2.4   
+ [41] dplyr_1.0.4               rappdirs_0.3.3           
+ [43] Rcpp_1.0.6                vctrs_0.3.6              
+ [45] Biostrings_2.58.0         nlme_3.1-152             
+ [47] rtracklayer_1.50.0        DelayedMatrixStats_1.12.3
+ [49] polylabelr_0.2.0          xfun_0.21                
+ [51] stringr_1.4.0             beachmat_2.6.4           
+ [53] lifecycle_1.0.0           irlba_2.3.3              
+ [55] renv_0.12.5               statmod_1.4.35           
+ [57] XML_3.99-0.5              DEoptimR_1.0-8           
+ [59] edgeR_3.32.1              zlibbioc_1.36.0          
+ [61] scales_1.1.1              hms_1.0.0                
+ [63] promises_1.2.0.1          ProtGenerics_1.22.0      
+ [65] RColorBrewer_1.1-2        yaml_2.2.1               
+ [67] curl_4.3                  memoise_2.0.0            
+ [69] gridExtra_2.3             biomaRt_2.46.3           
+ [71] stringi_1.5.3             RSQLite_2.2.3            
+ [73] highr_0.8                 BiocParallel_1.24.1      
+ [75] rlang_0.4.10              pkgconfig_2.0.3          
+ [77] bitops_1.0-6              evaluate_0.14            
+ [79] lattice_0.20-41           purrr_0.3.4              
+ [81] labeling_0.4.2            GenomicAlignments_1.26.0 
+ [83] cowplot_1.1.1             bit_4.0.4                
+ [85] tidyselect_1.1.0          magrittr_2.0.1           
+ [87] R6_2.5.0                  generics_0.1.0           
+ [89] DelayedArray_0.16.1       DBI_1.1.1                
+ [91] mgcv_1.8-34               pillar_1.4.7             
+ [93] whisker_0.4               withr_2.4.1              
+ [95] RCurl_1.98-1.2            tibble_3.0.6             
+ [97] crayon_1.4.1              BiocFileCache_1.14.0     
+ [99] rmarkdown_2.6             viridis_0.5.1            
+[101] progress_1.2.2            locfit_1.5-9.4           
+[103] grid_4.0.2                FNN_1.1.3                
+[105] blob_1.2.1                git2r_0.28.0             
+[107] digest_0.6.27             httpuv_1.5.5             
+[109] openssl_1.4.3             munsell_0.5.0            
+[111] beeswarm_0.2.3            viridisLite_0.3.0        
+[113] vipor_0.4.5               askpass_1.1              </code></pre>
 </div>
 </div>
 
