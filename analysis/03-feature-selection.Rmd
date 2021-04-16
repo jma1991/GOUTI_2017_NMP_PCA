@@ -488,9 +488,9 @@ plt <- lapply(dec, function(x) {
   
   sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
   
-  sce <- runUMAP(sce, dimred = "stage")
+  sce <- runUMAP(sce, dimred = "PCA")
 
-  plotUMAP(sce, colour_by = "sum") + ggtitle(x)
+  plotUMAP(sce, colour_by = "stage") + ggtitle(x)
 
 })
 
