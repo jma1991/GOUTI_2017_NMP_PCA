@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong590ea10"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 590ea10 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong07fbe36"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 07fbe36 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong590ea10" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong07fbe36" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 590ea10. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 07fbe36. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -629,6 +629,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+0558470
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -718,6 +735,43 @@ brk &lt;- seq(0, max(mod), length.out = 11)
 
 pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
 <pre class="r"><code>var &lt;- c(&quot;cluster_walktrap&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
 <div id="pca" class="section level4">
@@ -726,6 +780,43 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="tsne" class="section level4">
 <h4>TSNE</h4>
@@ -733,6 +824,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="umap" class="section level4">
 <h4>UMAP</h4>
@@ -740,6 +868,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="louvain" class="section level3 tabset">
@@ -767,6 +932,43 @@ brk &lt;- seq(0, max(mod), length.out = 11)
 
 pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
 <pre class="r"><code>var &lt;- c(&quot;cluster_louvain&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
 <div id="pca-1" class="section level4">
@@ -775,6 +977,43 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="tsne-1" class="section level4">
 <h4>TSNE</h4>
@@ -782,6 +1021,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="umap-1" class="section level4">
 <h4>UMAP</h4>
@@ -789,6 +1065,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -813,6 +1126,43 @@ ggplot(dat, aes(var, val)) +
   labs(x = &quot;Number of clusters&quot;, y = &quot;Gap statistic&quot;) +
   theme_bw()</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Select optimal number of clusters:</p>
 <pre class="r"><code>set.seed(1001110111)
 
@@ -839,6 +1189,43 @@ plot(hcl)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="tsne-2" class="section level4">
 <h4>TSNE</h4>
@@ -846,6 +1233,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-23-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="umap-2" class="section level4">
 <h4>UMAP</h4>
@@ -853,6 +1277,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-24-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
+Past versions of unnamed-chunk-24-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -882,6 +1343,43 @@ col &lt;- seq_len(nlevels(sce$cluster_hclust))
 
 plot(sil, col = col, border = NA)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
+Past versions of unnamed-chunk-26-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-26-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
 <pre class="r"><code>var &lt;- c(&quot;cluster_hclust&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
 <div id="pca-3" class="section level4">
@@ -890,6 +1388,43 @@ plot(sil, col = col, border = NA)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-28-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="tsne-3" class="section level4">
 <h4>TSNE</h4>
@@ -897,6 +1432,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-29-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
+Past versions of unnamed-chunk-29-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="umap-3" class="section level4">
 <h4>UMAP</h4>
@@ -904,6 +1476,43 @@ patchwork::wrap_plots(plt)</code></pre>
 
 patchwork::wrap_plots(plt)</code></pre>
 <p><img src="figure/05-clustering.Rmd/unnamed-chunk-30-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
+Past versions of unnamed-chunk-30-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+8948226
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>

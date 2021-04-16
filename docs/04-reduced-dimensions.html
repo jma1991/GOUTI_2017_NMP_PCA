@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong590ea10"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 590ea10 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong07fbe36"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 07fbe36 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong590ea10" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong07fbe36" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 590ea10. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 07fbe36. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -629,6 +629,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+0558470
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -810,6 +827,43 @@ ggplot(dat, aes(index, total)) +
   scale_y_continuous(n.breaks = 10, limits = c(0, NA)) +
   theme_minimal()</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+c92101a
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="technical" class="section level3">
 <h3>Technical</h3>
@@ -852,6 +906,43 @@ ggplot(dat, aes(n.pcs, n.clusters)) +
   labs(x = &quot;PC&quot;, y = &quot;Number of clusters&quot;) +
   theme_minimal()</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+c92101a
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="selection" class="section level3">
 <h3>Selection</h3>
@@ -866,6 +957,43 @@ reducedDim(sce, &quot;PCA&quot;) &lt;- dim[, len]</code></pre>
 <p>Plot scatter matrix of retained PCs:</p>
 <pre class="r"><code>plotPCA(sce, colour_by = &quot;cluster&quot;, shape_by = &quot;stage&quot;, ncomponents = num) + theme(legend.position = &quot;none&quot;)</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+c92101a
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Cluster cells to help examine effect of TSNE and UMAP hyper-parameters:</p>
 <pre class="r"><code>snn &lt;- buildSNNGraph(sce, use.dimred = &quot;PCA&quot;)
 
@@ -908,6 +1036,43 @@ plt &lt;- apply(arg, 1, function(x) {
 
 wrap_plots(plt, nrow = 6, ncol = 6, byrow = FALSE)</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+c92101a
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="calculate-tsne" class="section level3">
 <h3>Calculate TSNE</h3>
@@ -1029,6 +1194,17 @@ Date
 <tbody>
 <tr>
 <td>
+4846616
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+<tr>
+<td>
 c92101a
 </td>
 <td>
@@ -1073,6 +1249,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+4846616
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
 <tr>
 <td>
 5b9f72c
@@ -1130,6 +1317,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+4846616
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
 <tr>
 <td>
 5b9f72c
