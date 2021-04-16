@@ -158,8 +158,8 @@ The first approach to identifying low-quality cells is to apply manual threshold
 dat <- DataFrame(
   low_lib_size = sce$sum < 100000,
   low_n_features = sce$detected < 10000,
-  high_subsets_MT_percent = sce$subsets_MT_percent > 20,
-  high_altexps_spike_percent = sce$altexps_spike_percent > 25
+  high_subsets_MT_percent = sce$subsets_MT_percent > 15,
+  high_altexps_spike_percent = sce$altexps_spike_percent > 10
 )
 
 sce$manual_discard <- dat$low_lib_size | dat$low_n_features | dat$high_subsets_MT_percent | dat$high_altexps_spike_percent
