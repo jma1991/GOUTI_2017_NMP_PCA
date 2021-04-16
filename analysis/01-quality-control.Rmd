@@ -76,7 +76,7 @@ dat <- as.data.frame(colData(sce))
 
 Inspect the distributions of QC metrics:
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected") + scale_y_log10() + ggtitle("Detected features"),
@@ -102,7 +102,7 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
@@ -114,7 +114,7 @@ patchwork::wrap_plots(
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
@@ -126,7 +126,7 @@ patchwork::wrap_plots(
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
@@ -157,7 +157,7 @@ sce$manual_discard <- dat$low_lib_size | dat$low_n_features | dat$high_subsets_M
 
 Inspect distribution of QC metrics:
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -170,7 +170,7 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
@@ -182,7 +182,7 @@ patchwork::wrap_plots(
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
@@ -194,7 +194,7 @@ patchwork::wrap_plots(
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
@@ -216,7 +216,7 @@ sce$adaptive_discard <- dat$discard
 
 Inspect distribution of QC metrics:
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -229,7 +229,7 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
@@ -241,7 +241,7 @@ patchwork::wrap_plots(
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
@@ -253,7 +253,7 @@ patchwork::wrap_plots(
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
@@ -276,7 +276,7 @@ sce$outlier_discard <- out
 
 Inspect distribution of QC metrics:
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -289,7 +289,7 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
@@ -301,7 +301,7 @@ patchwork::wrap_plots(
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
@@ -313,7 +313,7 @@ patchwork::wrap_plots(
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 9, fig.width = 10}
+```{r fig.height = 9, fig.width = 10}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),

@@ -70,7 +70,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 
 Inspect relative log expression plots coloured by column data:
 
-```{r cache = FALSE, fig.height = 5, fig.width = 10}
+```{r fig.height = 5, fig.width = 10}
 plotRLE(sce[!nan, ], colour_by = "stage")
 ```
 
@@ -78,7 +78,7 @@ Inspect dimensionality reduction plots coloured by QC metrics:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
@@ -88,7 +88,7 @@ wrap_plots(plt, ncol = 2)
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
@@ -98,7 +98,7 @@ wrap_plots(plt, ncol = 2)
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
@@ -126,7 +126,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 
 Inspect relative log expression plots coloured by column data:
 
-```{r cache = FALSE, fig.height = 5, fig.width = 10}
+```{r fig.height = 5, fig.width = 10}
 plotRLE(sce[!nan, ], colour_by = "stage")
 ```
 
@@ -134,7 +134,7 @@ Inspect dimensionality reduction plots coloured by QC metrics:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
@@ -144,7 +144,7 @@ wrap_plots(plt, ncol = 2)
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
@@ -154,7 +154,7 @@ wrap_plots(plt, ncol = 2)
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
@@ -186,7 +186,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 
 Inspect relative log expression plots coloured by column data:
 
-```{r cache = FALSE, fig.height = 5, fig.width = 10}
+```{r fig.height = 5, fig.width = 10}
 plotRLE(sce[!nan, ], colour_by = "stage")
 ```
 
@@ -194,7 +194,7 @@ Inspect dimensionality reduction plots coloured by QC metrics:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
@@ -204,7 +204,7 @@ wrap_plots(plt, ncol = 2)
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
@@ -214,7 +214,7 @@ wrap_plots(plt, ncol = 2)
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
@@ -242,7 +242,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 
 Inspect relative log expression plots coloured by column data:
 
-```{r cache = FALSE, fig.height = 5, fig.width = 10}
+```{r fig.height = 5, fig.width = 10}
 plotRLE(sce[!nan, ], colour_by = "stage")
 ```
 
@@ -250,7 +250,7 @@ Inspect dimensionality reduction plots coloured by QC metrics:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
@@ -260,7 +260,7 @@ wrap_plots(plt, ncol = 2)
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
@@ -270,7 +270,7 @@ wrap_plots(plt, ncol = 2)
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
@@ -298,7 +298,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 
 Inspect relative log expression plots coloured by column data:
 
-```{r cache = FALSE, fig.height = 5, fig.width = 10}
+```{r fig.height = 5, fig.width = 10}
 plotRLE(sce[!nan, ], colour_by = "stage")
 ```
 
@@ -306,7 +306,7 @@ Inspect dimensionality reduction plots coloured by QC metrics:
 
 #### PCA
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
@@ -316,7 +316,7 @@ wrap_plots(plt, ncol = 2)
 
 #### TSNE
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
@@ -326,7 +326,7 @@ wrap_plots(plt, ncol = 2)
 
 #### UMAP
 
-```{r cache = FALSE, fig.height = 8, fig.width = 10}
+```{r fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
