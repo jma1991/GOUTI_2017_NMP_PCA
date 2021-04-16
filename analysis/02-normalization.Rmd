@@ -23,15 +23,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
 library(BiocSingular)
-library(patchwork)
-library(robustbase)
 library(scater)
 library(scran)
 library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(patchwork)
 ```
 
 Read experiment data:
@@ -40,7 +44,7 @@ Read experiment data:
 sce <- readRDS("output/01-quality-control.rds")
 ```
 
-Filter lowly detected and expressed genes:
+Create filter for lowly expressed and detected genes:
 
 ```{r}
 nan <- rowData(sce)$low_mean | rowData(sce)$low_detected
@@ -83,7 +87,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & coord_fixed(1)
 ```
 
 #### TSNE
@@ -93,7 +97,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
@@ -103,7 +107,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 ### Library {.tabset}
@@ -139,7 +143,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & coord_fixed(1)
 ```
 
 #### TSNE
@@ -149,7 +153,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
@@ -159,7 +163,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 ### Deconvolution {.tabset}
@@ -199,7 +203,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & coord_fixed(1)
 ```
 
 #### TSNE
@@ -209,7 +213,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
@@ -219,7 +223,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 ### Spike-in {.tabset}
@@ -255,7 +259,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & coord_fixed(1)
 ```
 
 #### TSNE
@@ -265,7 +269,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
@@ -275,7 +279,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 ### Downsample {.tabset}
@@ -311,7 +315,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & coord_fixed(1)
 ```
 
 #### TSNE
@@ -321,7 +325,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
@@ -331,7 +335,7 @@ var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
 plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = "stage"))
 
-wrap_plots(plt, ncol = 2)
+wrap_plots(plt, ncol = 2) & theme(aspect.ratio = 1)
 ```
 
 ## Selection
