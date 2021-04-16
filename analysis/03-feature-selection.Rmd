@@ -450,7 +450,7 @@ plt <- lapply(dec, function(x) {
   
   sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
 
-  plotPCA(sce, colour_by = "sum") + ggtitle(x)
+  plotPCA(sce, colour_by = "stage") + ggtitle(x)
 
 })
 
@@ -470,7 +470,7 @@ plt <- lapply(dec, function(x) {
   
   sce <- runTSNE(sce, dimred = "PCA")
 
-  plotTSNE(sce, colour_by = "sum") + ggtitle(x)
+  plotTSNE(sce, colour_by = "stage") + ggtitle(x)
 
 })
 
@@ -488,7 +488,7 @@ plt <- lapply(dec, function(x) {
   
   sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
   
-  sce <- runUMAP(sce, dimred = "PCA")
+  sce <- runUMAP(sce, dimred = "stage")
 
   plotUMAP(sce, colour_by = "sum") + ggtitle(x)
 
