@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong477349a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 477349a </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong5d28839"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 5d28839 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong477349a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong5d28839" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 477349a. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 5d28839. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -578,10 +578,15 @@ Ignored files:
 
 Untracked files:
     Untracked:  _workflowr.R
-    Untracked:  analysis/08-marker-detection.Rmd
-    Untracked:  analysis/09-cell-annotation.Rmd
-    Untracked:  analysis/10-atlas-integration.Rmd
+    Untracked:  analysis/04-data-integration.Rmd
+    Untracked:  analysis/05-reduced-dimensions.Rmd
+    Untracked:  analysis/06-clustering.Rmd
+    Untracked:  analysis/07-doublet-detection.Rmd
+    Untracked:  analysis/08-cell-cycle.Rmd
+    Untracked:  analysis/09-marker-detection.Rmd
+    Untracked:  analysis/10-cell-annotation.Rmd
     Untracked:  analysis/interactive.Rmd
+    Untracked:  analysis/rename.sh
     Untracked:  renv.lock
     Untracked:  renv/
 
@@ -589,6 +594,10 @@ Unstaged changes:
     Modified:   .Rprofile
     Modified:   .gitignore
     Modified:   _workflowr.yml
+    Deleted:    analysis/04-reduced-dimensions.Rmd
+    Deleted:    analysis/05-clustering.Rmd
+    Deleted:    analysis/06-doublet-detection.Rmd
+    Deleted:    analysis/07-cell-cycle.Rmd
     Modified:   analysis/_site.yml
 
 </code></pre>
@@ -628,6 +637,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+5d28839
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+90b8dc4
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -936,17 +979,18 @@ Build
   message    = FALSE,
   warning    = FALSE
 )</code></pre>
-<p>Load required packages:</p>
+<p>Load Bioconductor packages:</p>
 <pre class="r"><code>library(BiocSingular)
-library(org.Mm.eg.db)
-library(eulerr)
-library(pheatmap)
-library(scales)
-library(scater)
-library(scran)
-library(msigdbr)
 library(EnsDb.Mmusculus.v79)
-library(patchwork)</code></pre>
+library(org.Mm.eg.db)
+library(scater)
+library(scran)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(eulerr)
+library(msigdbr)
+library(patchwork)
+library(pheatmap)
+library(scales)</code></pre>
 <p>Read experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;output/02-normalization.rds&quot;)</code></pre>
 </div>
@@ -1011,13 +1055,13 @@ plt &lt;- lapply(ids, function(i) {
 })
 
 wrap_plots(plt)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
-Past versions of unnamed-chunk-10-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div id="fig-unnamed-chunk-11-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1073,44 +1117,7 @@ plt &lt;- lapply(ids, function(i) {
 })
 
 wrap_plots(plt)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
-Past versions of unnamed-chunk-11-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-11-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>metadata(sce)$modelGeneCV2 &lt;- dec</code></pre>
 </div>
 <div id="modelgenevarwithspikes" class="section level3">
@@ -1193,44 +1200,7 @@ plt &lt;- lapply(ids, function(i) {
 })
 
 wrap_plots(plt)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>metadata(sce)$modelGeneVarByPoisson &lt;- dec</code></pre>
 </div>
 </div>
@@ -1252,44 +1222,7 @@ sel &lt;- rownames(dec) %in% hvg
 metadata(sce)$modelGeneVar$hvg &lt;- sel</code></pre>
 <p>Plot expression of highly variable genes:</p>
 <pre class="r"><code>plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="modelgenecv2-1" class="section level3">
 <h3>modelGeneCV2</h3>
@@ -1307,44 +1240,7 @@ sel &lt;- rownames(dec) %in% hvg
 metadata(sce)$modelGeneCV2$hvg &lt;- sel</code></pre>
 <p>Plot expression of highly variable genes:</p>
 <pre class="r"><code>plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
-Past versions of unnamed-chunk-18-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-18-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="modelgenevarwithspikes-1" class="section level3">
 <h3>modelGeneVarWithSpikes</h3>
@@ -1396,13 +1292,13 @@ sel &lt;- rownames(dec) %in% hvg
 metadata(sce)$modelGeneVarByPoisson$hvg &lt;- sel</code></pre>
 <p>Plot expression of highly variable genes:</p>
 <pre class="r"><code>plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
-Past versions of unnamed-chunk-24-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
+Past versions of unnamed-chunk-25-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div id="fig-unnamed-chunk-25-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1457,13 +1353,13 @@ pal &lt;- RColorBrewer::brewer.pal(n = 5, name = &quot;Pastel1&quot;)
 lab &lt;- comma(fit$original.values)
 
 plot(fit, fills = pal, quantities = lab)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
-Past versions of unnamed-chunk-25-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
+Past versions of unnamed-chunk-26-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-25-1" class="collapse">
+<div id="fig-unnamed-chunk-26-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1518,44 +1414,7 @@ col &lt;- colorRampPalette(pal)(10)
 brk &lt;- seq(0, 1, length.out = 11)
 
 pheatmap(mat, color = col, breaks = brk)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
-Past versions of unnamed-chunk-26-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-26-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dimensionality-reduction" class="section level3 tabset">
 <h3 class="tabset">Dimensionality reduction</h3>
@@ -1581,13 +1440,13 @@ James Ashmore
 })
 
 patchwork::wrap_plots(plt, ncol = 2)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-28-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-29-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
-Past versions of unnamed-chunk-28-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
+Past versions of unnamed-chunk-29-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div id="fig-unnamed-chunk-29-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1655,84 +1514,6 @@ James Ashmore
   sce &lt;- runTSNE(sce, dimred = &quot;PCA&quot;)
 
   plotTSNE(sce, colour_by = &quot;stage&quot;) + ggtitle(x)
-
-})
-
-patchwork::wrap_plots(plt, ncol = 2)</code></pre>
-<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-29-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
-Past versions of unnamed-chunk-29-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-29-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-040511d
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-<tr>
-<td>
-edb4a81
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-<tr>
-<td>
-db982c5
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="umap" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>plt &lt;- lapply(dec, function(x) {
-  
-  set.seed(0101001100)
-  
-  hvg &lt;- metadata(sce)[[x]]$hvg
-  
-  sce &lt;- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
-  
-  sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;)
-
-  plotUMAP(sce, colour_by = &quot;stage&quot;) + ggtitle(x)
 
 })
 
@@ -1809,6 +1590,25 @@ James Ashmore
 </div>
 </div>
 </div>
+<div id="umap" class="section level4">
+<h4>UMAP</h4>
+<pre class="r"><code>plt &lt;- lapply(dec, function(x) {
+  
+  set.seed(0101001100)
+  
+  hvg &lt;- metadata(sce)[[x]]$hvg
+  
+  sce &lt;- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
+  
+  sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;)
+
+  plotUMAP(sce, colour_by = &quot;stage&quot;) + ggtitle(x)
+
+})
+
+patchwork::wrap_plots(plt, ncol = 2)</code></pre>
+<p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-31-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 </div>
 <div id="selection" class="section level2">
@@ -1845,80 +1645,80 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
+[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
- [1] patchwork_1.1.1             EnsDb.Mmusculus.v79_2.99.0 
- [3] ensembldb_2.14.0            AnnotationFilter_1.14.0    
- [5] GenomicFeatures_1.42.1      msigdbr_7.2.1              
- [7] scran_1.18.5                scater_1.18.5              
- [9] ggplot2_3.3.3               SingleCellExperiment_1.12.0
-[11] SummarizedExperiment_1.20.0 GenomicRanges_1.42.0       
-[13] GenomeInfoDb_1.26.2         MatrixGenerics_1.2.1       
-[15] matrixStats_0.58.0          scales_1.1.1               
-[17] pheatmap_1.0.12             eulerr_6.1.0               
-[19] org.Mm.eg.db_3.12.0         AnnotationDbi_1.52.0       
-[21] IRanges_2.24.1              S4Vectors_0.28.1           
-[23] Biobase_2.50.0              BiocGenerics_0.36.0        
+ [1] scales_1.1.1                pheatmap_1.0.12            
+ [3] patchwork_1.1.1             msigdbr_7.2.1              
+ [5] eulerr_6.1.0                scran_1.18.5               
+ [7] scater_1.18.5               ggplot2_3.3.3              
+ [9] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
+[11] MatrixGenerics_1.2.1        matrixStats_0.58.0         
+[13] org.Mm.eg.db_3.12.0         EnsDb.Mmusculus.v79_2.99.0 
+[15] ensembldb_2.14.0            AnnotationFilter_1.14.0    
+[17] GenomicFeatures_1.42.1      AnnotationDbi_1.52.0       
+[19] Biobase_2.50.0              GenomicRanges_1.42.0       
+[21] GenomeInfoDb_1.26.2         IRanges_2.24.1             
+[23] S4Vectors_0.28.1            BiocGenerics_0.36.0        
 [25] BiocSingular_1.6.0          workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
-  [1] BiocFileCache_1.14.0      igraph_1.2.6             
-  [3] lazyeval_0.2.2            polylabelr_0.2.0         
-  [5] BiocParallel_1.24.1       digest_0.6.27            
-  [7] htmltools_0.5.1.1         viridis_0.5.1            
-  [9] magrittr_2.0.1            memoise_2.0.0            
- [11] limma_3.46.0              Biostrings_2.58.0        
- [13] askpass_1.1               prettyunits_1.1.1        
- [15] colorspace_2.0-0          blob_1.2.1               
- [17] rappdirs_0.3.3            xfun_0.21                
- [19] dplyr_1.0.4               crayon_1.4.1             
- [21] RCurl_1.98-1.2            glue_1.4.2               
- [23] polyclip_1.10-0           gtable_0.3.0             
- [25] zlibbioc_1.36.0           XVector_0.30.0           
- [27] DelayedArray_0.16.1       DBI_1.1.1                
- [29] edgeR_3.32.1              Rcpp_1.0.6               
- [31] viridisLite_0.3.0         progress_1.2.2           
- [33] dqrng_0.2.1               bit_4.0.4                
- [35] rsvd_1.0.3                proxy_0.4-24             
- [37] httr_1.4.2                FNN_1.1.3                
- [39] RColorBrewer_1.1-2        ellipsis_0.3.1           
- [41] pkgconfig_2.0.3           XML_3.99-0.5             
- [43] farver_2.0.3              scuttle_1.0.4            
- [45] uwot_0.1.10               dbplyr_2.1.0             
- [47] locfit_1.5-9.4            tidyselect_1.1.0         
- [49] labeling_0.4.2            rlang_0.4.10             
- [51] later_1.1.0.1             munsell_0.5.0            
- [53] tools_4.0.2               cachem_1.0.4             
- [55] generics_0.1.0            RSQLite_2.2.3            
- [57] evaluate_0.14             stringr_1.4.0            
- [59] fastmap_1.1.0             yaml_2.2.1               
- [61] knitr_1.31                bit64_4.0.5              
- [63] fs_1.5.0                  purrr_0.3.4              
- [65] sparseMatrixStats_1.2.1   whisker_0.4              
- [67] xml2_1.3.2                biomaRt_2.46.3           
- [69] compiler_4.0.2            beeswarm_0.2.3           
- [71] curl_4.3                  tibble_3.0.6             
- [73] statmod_1.4.35            stringi_1.5.3            
- [75] highr_0.8                 RSpectra_0.16-0          
- [77] lattice_0.20-41           bluster_1.0.0            
- [79] ProtGenerics_1.22.0       Matrix_1.3-2             
- [81] vctrs_0.3.6               pillar_1.4.7             
- [83] lifecycle_1.0.0           BiocNeighbors_1.8.2      
- [85] cowplot_1.1.1             bitops_1.0-6             
- [87] irlba_2.3.3               httpuv_1.5.5             
- [89] rtracklayer_1.50.0        R6_2.5.0                 
- [91] promises_1.2.0.1          renv_0.12.5              
- [93] gridExtra_2.3             vipor_0.4.5              
- [95] codetools_0.2-18          assertthat_0.2.1         
- [97] openssl_1.4.3             rprojroot_2.0.2          
- [99] withr_2.4.1               GenomicAlignments_1.26.0 
-[101] Rsamtools_2.6.0           GenomeInfoDbData_1.2.4   
-[103] hms_1.0.0                 grid_4.0.2               
-[105] beachmat_2.6.4            rmarkdown_2.6            
-[107] DelayedMatrixStats_1.12.3 Rtsne_0.15               
-[109] git2r_0.28.0              ggbeeswarm_0.6.0         </code></pre>
+  [1] Rtsne_0.15                ggbeeswarm_0.6.0         
+  [3] colorspace_2.0-0          ellipsis_0.3.1           
+  [5] rprojroot_2.0.2           scuttle_1.0.4            
+  [7] bluster_1.0.0             XVector_0.30.0           
+  [9] BiocNeighbors_1.8.2       fs_1.5.0                 
+ [11] proxy_0.4-24              farver_2.0.3             
+ [13] bit64_4.0.5               RSpectra_0.16-0          
+ [15] xml2_1.3.2                codetools_0.2-18         
+ [17] sparseMatrixStats_1.2.1   cachem_1.0.4             
+ [19] knitr_1.31                polyclip_1.10-0          
+ [21] Rsamtools_2.6.0           dbplyr_2.1.0             
+ [23] uwot_0.1.10               compiler_4.0.2           
+ [25] httr_1.4.2                dqrng_0.2.1              
+ [27] assertthat_0.2.1          Matrix_1.3-2             
+ [29] fastmap_1.1.0             lazyeval_0.2.2           
+ [31] limma_3.46.0              later_1.1.0.1            
+ [33] htmltools_0.5.1.1         prettyunits_1.1.1        
+ [35] tools_4.0.2               rsvd_1.0.3               
+ [37] igraph_1.2.6              gtable_0.3.0             
+ [39] glue_1.4.2                GenomeInfoDbData_1.2.4   
+ [41] dplyr_1.0.4               rappdirs_0.3.3           
+ [43] Rcpp_1.0.6                vctrs_0.3.6              
+ [45] Biostrings_2.58.0         rtracklayer_1.50.0       
+ [47] DelayedMatrixStats_1.12.3 polylabelr_0.2.0         
+ [49] xfun_0.21                 stringr_1.4.0            
+ [51] beachmat_2.6.4            lifecycle_1.0.0          
+ [53] irlba_2.3.3               renv_0.12.5              
+ [55] statmod_1.4.35            XML_3.99-0.5             
+ [57] edgeR_3.32.1              zlibbioc_1.36.0          
+ [59] hms_1.0.0                 promises_1.2.0.1         
+ [61] ProtGenerics_1.22.0       RColorBrewer_1.1-2       
+ [63] yaml_2.2.1                curl_4.3                 
+ [65] memoise_2.0.0             gridExtra_2.3            
+ [67] biomaRt_2.46.3            stringi_1.5.3            
+ [69] RSQLite_2.2.3             highr_0.8                
+ [71] BiocParallel_1.24.1       rlang_0.4.10             
+ [73] pkgconfig_2.0.3           bitops_1.0-6             
+ [75] evaluate_0.14             lattice_0.20-41          
+ [77] purrr_0.3.4               labeling_0.4.2           
+ [79] GenomicAlignments_1.26.0  cowplot_1.1.1            
+ [81] bit_4.0.4                 tidyselect_1.1.0         
+ [83] magrittr_2.0.1            R6_2.5.0                 
+ [85] generics_0.1.0            DelayedArray_0.16.1      
+ [87] DBI_1.1.1                 pillar_1.4.7             
+ [89] whisker_0.4               withr_2.4.1              
+ [91] RCurl_1.98-1.2            tibble_3.0.6             
+ [93] crayon_1.4.1              BiocFileCache_1.14.0     
+ [95] rmarkdown_2.6             viridis_0.5.1            
+ [97] progress_1.2.2            locfit_1.5-9.4           
+ [99] grid_4.0.2                FNN_1.1.3                
+[101] blob_1.2.1                git2r_0.28.0             
+[103] digest_0.6.27             httpuv_1.5.5             
+[105] openssl_1.4.3             munsell_0.5.0            
+[107] beeswarm_0.2.3            viridisLite_0.3.0        
+[109] vipor_0.4.5               askpass_1.1              </code></pre>
 </div>
 </div>
 
