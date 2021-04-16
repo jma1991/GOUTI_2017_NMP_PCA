@@ -86,7 +86,7 @@ dat <- makePerCellDF(sce)
 
 Inspect the distributions of QC metrics:
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected") + scale_y_log10() + ggtitle("Detected features"),
@@ -112,38 +112,38 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
   plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "stage") + ggtitle("MT percent"),
   plotPCA(sce, colour_by = "altexps_spike_percent", shape_by = "stage") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & coord_fixed(1)
 ```
 
 #### TSNE
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
   plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "stage") + ggtitle("MT percent"),
   plotTSNE(sce, colour_by = "altexps_spike_percent", shape_by = "stage") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "stage") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "stage") + ggtitle("Detected features"),
   plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "stage") + ggtitle("MT percent"),
   plotUMAP(sce, colour_by = "altexps_spike_percent", shape_by = "stage") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 ## Cell Filtering
@@ -167,7 +167,7 @@ sce$manual_discard <- dat$low_lib_size | dat$low_n_features | dat$high_subsets_M
 
 Inspect distribution of QC metrics:
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -180,38 +180,38 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
   plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
   plotPCA(sce, colour_by = "altexps_spike_percent", shape_by = "manual_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & coord_fixed(1)
 ```
 
 #### TSNE
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
   plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
   plotTSNE(sce, colour_by = "altexps_spike_percent", shape_by = "manual_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
   plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
   plotUMAP(sce, colour_by = "altexps_spike_percent", shape_by = "manual_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 ### Adaptive threshold {.tabset}
@@ -226,7 +226,7 @@ sce$adaptive_discard <- dat$discard
 
 Inspect distribution of QC metrics:
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -239,38 +239,38 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
   plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
   plotPCA(sce, colour_by = "altexps_spike_percent", shape_by = "adaptive_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & coord_fixed(1)
 ```
 
 #### TSNE
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
   plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
   plotTSNE(sce, colour_by = "altexps_spike_percent", shape_by = "adaptive_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
   plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
   plotUMAP(sce, colour_by = "altexps_spike_percent", shape_by = "adaptive_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 ### Outlier threshold {.tabset}
@@ -286,7 +286,7 @@ sce$outlier_discard <- out
 
 Inspect distribution of QC metrics:
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 wrap_plots(
   plotColData(sce, x = "stage", y = "sum", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Total count"),
   plotColData(sce, x = "stage", y = "detected", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Detected features"),
@@ -299,38 +299,38 @@ Inspect dimensionality reduction plots:
 
 #### PCA
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotPCA(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotPCA(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
   plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
   plotPCA(sce, colour_by = "altexps_spike_percent", shape_by = "outlier_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & coord_fixed(1)
 ```
 
 #### TSNE
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotTSNE(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotTSNE(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
   plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
   plotTSNE(sce, colour_by = "altexps_spike_percent", shape_by = "outlier_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 #### UMAP
 
-```{r fig.height = 9, fig.width = 10}
+```{r}
 patchwork::wrap_plots(
   plotUMAP(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
   plotUMAP(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
   plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
   plotUMAP(sce, colour_by = "altexps_spike_percent", shape_by = "outlier_discard") + ggtitle("Spike percent"),
   ncol = 2
-)
+) & theme(aspect.ratio = 1)
 ```
 
 ### Comparison
