@@ -1,0 +1,161 @@
+---
+title: "Cell type annotation"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.lazy = FALSE,
+  cache.path = "cache/09-cell-annotation.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+library(scuttle)
+library(SingleR)
+```
+
+Load CRAN packages:
+
+```{r}
+library(patchwork)
+library(pheatmap)
+```
+
+Source custom functions:
+
+```{r}
+source("code/cleanEmbryoAtlasData.R")
+```
+
+Import experiment data:
+
+```{r}
+sce <- readRDS("output/08-marker-detection.rds")
+```
+
+## Annotation
+
+### Reference data
+
+Load the mouse gastrulation data package:
+
+```{r}
+library(MouseGastrulationData)
+```
+
+Subset atlas sample metadata by embryonic stage:
+
+```{r}
+AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage == "E8.5")
+```
+
+Retrieve processed samples from embryo atlas data:
+
+```{r}
+ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
+```
+
+Clean processed samples from embryo atlas data:
+
+```{r}
+ref <- cleanEmbryoAtlasData(ref)
+```
+
+Identify marker genes for each cell type whilst blocking on sample:
+
+```{r}
+res <- pairwiseTTests(logcounts(ref), groups = ref$celltype, block = ref$sample)
+
+sig <- getTopMarkers(res$statistics, res$pairs)
+```
+
+Aggregate references within each celltype and sample combination:
+
+```{r}
+lab <- paste(ref$celltype, ref$sample, sep = "-")
+
+ref <- aggregateReference(ref, labels = lab, BSPARAM = BiocSingular::ExactParam())
+```
+
+Remove sample label from aggregated reference names:
+
+```{r}
+lab <- sapply(strsplit(colnames(ref), "-"), .subset, 1)
+```
+
+Return the best annotation for each cell in the test dataset:
+
+```{r}
+ids <- rownames(sce) # save original feature names
+
+rownames(sce) <- rowData(sce)$gene_id # make feature names compatible
+
+fit <- SingleR(sce, ref, labels = lab, genes = sig)
+
+rownames(sce) <- ids # return original feature names
+```
+
+Store SingleR assignments in experiment data:
+
+```{r}
+sce$celltype_singler <- fit$labels
+```
+
+Create a heatmap of the average SingleR assignment scores:
+
+```{r}
+plotScoreHeatmap(fit, clusters = sce$cluster, fontsize = 8)
+```
+
+Plot score distributions of labels:
+
+```{r}
+plotScoreDistribution(fit, show = "delta.med", ncol = 3, show.nmads = 3)
+```
+
+## Selection
+
+Choose cell type annotation method for downstream analysis:
+
+```{r}
+sce$celltype <- sce$celltype_singler
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "output/09-cell-annotation.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
