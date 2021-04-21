@@ -90,7 +90,7 @@ sce$Meox1 <- counts(sce)["Meox1", ] > 0
 sce$Msgn1 <- counts(sce)["Msgn1", ] > 0
 sce$Tbx6 <- counts(sce)["Tbx6", ] > 0
 sce$NMP <- sce$Bra & sce$Sox2
-sce$MPC <- sce$Bra & sce$ Msgn1 & sce$Tbx6
+sce$MPC <- sce$Bra & sce$Msgn1 & sce$Tbx6
 sce$PSM <- !sce$Bra & sce$Msgn1 & sce$Tbx6
 
 # Rename and reorder reduced dimensions
