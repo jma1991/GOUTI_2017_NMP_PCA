@@ -129,7 +129,7 @@ Inspect the distribution of doublet scores on reduced dimensions:
 #### PCA
 
 ```{r}
-plotPCA(sce, colour_by = "doublet_score", shape_by = "stage")
+plotReducedDim(sce, dimred = "corrected", colour_by = "doublet_score", shape_by = "stage")
 ```
 
 #### TSNE
