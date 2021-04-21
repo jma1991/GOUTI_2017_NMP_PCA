@@ -1,0 +1,141 @@
+---
+title: "Cell cycle assignment"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/08-cell-cycle.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(cyclone)
+library(scran)
+library(scater)
+library(scuttle)
+library(org.Mm.eg.db)
+```
+
+Import experiment data:
+
+```{r}
+sce <- readRDS("output/07-doublet-detection.rds")
+```
+
+## Expression
+
+Inspect the relative expression of cyclins across the clusters:
+
+```{r}
+idx <- grep("^Ccn[abde][0-9]$", rowData(sce)$gene_name)
+
+ids <- rownames(sce)[idx]
+
+plotHeatmap(sce, features = sort(ids), colour_columns_by = "stage", order_columns_by = "cluster", cluster_rows = FALSE)
+```
+
+Inspect the relative expression of cell-cycle related genes across the clusters:
+
+```{r}
+org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
+
+idx <- which(rowData(sce)$gene_id %in% org$ENSEMBL)
+
+ids <- rownames(sce)[idx]
+
+plotHeatmap(sce, features = ids, colour_columns_by = "stage", order_columns_by = "cluster", center = TRUE, symmetric = TRUE, show_rownames = FALSE)
+```
+
+## Cyclone {.tabset}
+
+Perform cell cycle phase classification:
+
+```{r}
+con <- system.file("exdata", "mouse_cycle_markers.rds", package = "scran")
+
+ids <- readRDS(con)
+
+fit <- cyclone(sce, pairs = ids, gene.names = rowData(sce)$gene_id)
+```
+
+Assign cell cycle phase:
+
+```{r}
+sce$phase <- fit$phases
+```
+
+Plot cell cycle phase scores:
+
+```{r}
+ggplot(fit$scores, aes(G1, G2M, colour = fit$phases)) + 
+  geom_point() + 
+  scale_colour_brewer(name = "Phase", palette = "Set1") + 
+  theme_bw()
+```
+
+Plot cell cycle phase by cluster:
+
+```{r}
+dat <- makePerCellDF(sce, use.coldata = c("cluster", "phase"))
+
+ggplot(dat, aes(cluster)) + 
+  geom_bar(aes(fill = phase)) + 
+  scale_fill_brewer(name = "Phase", palette = "Set1") + 
+  labs(x = "Cluster", y = "Count") + 
+  theme_bw()
+```
+
+Plot cell cycle phase by embedding:
+
+### PCA
+
+```{r}
+plotReducedDim(sce, dimred = "corrected", colour_by = "phase", shape_by = "stage", text_by = "cluster")
+```
+
+### TSNE
+
+```{r}
+plotTSNE(sce, colour_by = "phase", shape_by = "stage", text_by = "cluster")
+```
+
+### UMAP
+
+```{r}
+plotUMAP(sce, colour_by = "phase", shape_by = "stage", text_by = "cluster")
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "output/08-cell-cycle.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
