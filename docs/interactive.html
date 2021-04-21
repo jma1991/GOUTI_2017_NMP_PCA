@@ -12,7 +12,7 @@
 <meta name="author" content="James Ashmore" />
 
 
-<title>Cell cycle assignment</title>
+<title>Interactive data exploration</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -441,7 +441,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Cell cycle assignment</h1>
+<h1 class="title toc-ignore">Interactive data exploration</h1>
 <h4 class="author">James Ashmore</h4>
 <h4 class="date">21 April, 2021</h4>
 
@@ -609,7 +609,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/08-cell-cycle.Rmd</code>) and HTML (<code>docs/08-cell-cycle.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/interactive.Rmd</code>) and HTML (<code>docs/interactive.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -635,112 +635,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-4f928d1
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-770e7ee
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-e2569be
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-43c9d05
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-5124ef1
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-3fc1291
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-547d3be
+00c744f
 </td>
 <td>
 James Ashmore
@@ -761,166 +659,143 @@ Build
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<p>Define chunk options:</p>
-<pre class="r"><code>knitr::opts_chunk$set(
-  autodep    = TRUE,
-  cache      = TRUE,
-  cache.path = &quot;cache/08-cell-cycle.Rmd/&quot;,
-  dev        = &quot;png&quot;,
-  error      = FALSE,
-  message    = FALSE,
-  warning    = FALSE
-)</code></pre>
-<p>Load Bioconductor packages:</p>
-<pre class="r"><code>library(scran)
-library(scater)
-library(scuttle)
-library(org.Mm.eg.db)</code></pre>
-<p>Import experiment data:</p>
-<pre class="r"><code>sce &lt;- readRDS(&quot;output/07-doublet-detection.rds&quot;)</code></pre>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(eval = FALSE)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(rsconnect)</code></pre>
+<p>Include Bioconductor package repositories:</p>
+<pre class="r"><code>options(repos = BiocManager::repositories())</code></pre>
+<p>Automatically answer yes to any user prompt:</p>
+<pre class="r"><code>options(needs.promptUser = FALSE)</code></pre>
+<p>Delete existing shiny directory:</p>
+<pre class="r"><code>unlink(&quot;shiny&quot;, recursive = TRUE)</code></pre>
+<p>Create shiny directory for interactive data exploration:</p>
+<pre class="r"><code>dir.create(&quot;shiny&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
 </div>
-<div id="expression" class="section level2">
-<h2>Expression</h2>
-<p>Inspect the relative expression of cyclins across the clusters:</p>
-<pre class="r"><code>idx &lt;- grep(&quot;^Ccn[abde][0-9]$&quot;, rowData(sce)$gene_name)
+<div id="application" class="section level2 tabset">
+<h2 class="tabset">Application</h2>
+<p>Copy data to iSEE directory:</p>
+<pre class="r"><code>file.copy(&quot;output/10-cell-annotation.rds&quot;, &quot;shiny/data.rds&quot;, overwrite = TRUE)</code></pre>
+<p>Write code to iSEE application file:</p>
+<pre class="r r"><code># Load required packages
+library(iSEE)
+library(SingleCellExperiment)
 
-ids &lt;- rownames(sce)[idx]
+# Load experiment object
+sce &lt;- readRDS(&quot;output/10-cell-annotation.rds&quot;)
 
-plotHeatmap(sce, features = sort(ids), colour_columns_by = &quot;stage&quot;, order_columns_by = &quot;cluster&quot;, cluster_rows = FALSE)</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Inspect the relative expression of cell-cycle related genes across the clusters:</p>
-<pre class="r"><code>org &lt;- select(org.Mm.eg.db, keys = &quot;GO:0007049&quot;, keytype = &quot;GOALL&quot;, column = &quot;ENSEMBL&quot;)
+# Clear metadata list
+metadata(sce) &lt;- list()
 
-idx &lt;- which(rowData(sce)$gene_id %in% org$ENSEMBL)
+# ReOrder assays
+assays(sce) &lt;- assays(sce)[c(&quot;counts&quot;, &quot;logcounts&quot;, &quot;reconstructed&quot;)]
 
-ids &lt;- rownames(sce)[idx]
+# Rescale reconstucted assay
+assay(sce, &quot;rescaled&quot;) &lt;- scales::rescale(x = as.matrix(assay(sce, &quot;reconstructed&quot;)), to = c(0, 100))
 
-plotHeatmap(sce, features = ids, colour_columns_by = &quot;stage&quot;, order_columns_by = &quot;cluster&quot;, center = TRUE, symmetric = TRUE, show_rownames = FALSE)</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="cyclone" class="section level2 tabset">
-<h2 class="tabset">Cyclone</h2>
-<p>Perform cell cycle phase classification:</p>
-<pre class="r"><code>con &lt;- system.file(&quot;exdata&quot;, &quot;mouse_cycle_markers.rds&quot;, package = &quot;scran&quot;)
+# Redefine Brachyury feature name
+ind &lt;- which(rowData(sce)$gene_id == &quot;ENSMUSG00000062327&quot;)
+rowData(sce$gene_name[ind] &lt;- &quot;Bra&quot;
 
-ids &lt;- readRDS(con)
+# Make feature names unique
+rownames(sce) &lt;- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
 
-fit &lt;- cyclone(sce, pairs = ids, gene.names = rowData(sce)$gene_id)</code></pre>
-<p>Assign cell cycle phase:</p>
-<pre class="r"><code>sce$phase &lt;- fit$phases</code></pre>
-<p>Plot cell cycle phase scores:</p>
-<pre class="r"><code>ggplot(fit$scores, aes(G1, G2M, colour = fit$phases)) + 
-  geom_point() + 
-  scale_colour_brewer(name = &quot;Phase&quot;, palette = &quot;Set1&quot;) + 
-  theme_bw()</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Plot cell cycle phase by cluster:</p>
-<pre class="r"><code>dat &lt;- makePerCellDF(sce, use.coldata = c(&quot;cluster&quot;, &quot;phase&quot;))
+# Clear rowData variables
+rowData(sce)$rotation &lt;- NULL
 
-ggplot(dat, aes(cluster)) + 
-  geom_bar(aes(fill = phase)) + 
-  scale_fill_brewer(name = &quot;Phase&quot;, palette = &quot;Set1&quot;) + 
-  labs(x = &quot;Cluster&quot;, y = &quot;Count&quot;) + 
-  theme_bw()</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Plot cell cycle phase by embedding:</p>
-<div id="pca" class="section level3">
-<h3>PCA</h3>
-<pre class="r"><code>plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="tsne" class="section level3">
-<h3>TSNE</h3>
-<pre class="r"><code>plotTSNE(sce, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="umap" class="section level3">
-<h3>UMAP</h3>
-<pre class="r"><code>plotUMAP(sce, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
-<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
+# Define population markers
+sce$Bra &lt;- counts(sce)[&quot;Bra&quot;, ] &gt; 0
+sce$Sox2 &lt;- counts(sce)[&quot;Sox2&quot;, ] &gt; 0
+sce$Meox1 &lt;- counts(sce)[&quot;Meox1&quot;, ] &gt; 0
+sce$Msgn1 &lt;- counts(sce)[&quot;Msgn1&quot;, ] &gt; 0
+sce$Tbx6 &lt;- counts(sce)[&quot;Tbx6&quot;, ] &gt; 0
+sce$NMP &lt;- sce$Bra &amp; sce$Sox2
+sce$MPC &lt;- sce$Bra &amp; sce$ Msgn1 &amp; sce$Tbx6
+sce$PSM &lt;- !sce$Bra &amp; sce$Msgn1 &amp; sce$Tbx6
+
+# Rename and reorder reduced dimensions
+reducedDimNames(sce) &lt;- c(&quot;MNN&quot;, &quot;PCA&quot;, &quot;TSNE&quot;, &quot;UMAP&quot;)
+reducedDims(sce) &lt;- reducedDims(sce)[c(&quot;PCA&quot;, &quot;MNN&quot;, &quot;TSNE&quot;, &quot;UMAP&quot;)]
+
+# Define column data colours
+celltype_colours &lt;- function(n) {
+  c(
+    &quot;Allantois&quot; = &quot;#532C8A&quot;,
+    &quot;Anterior Primitive Streak&quot; = &quot;#C19F70&quot;,
+    &quot;Blood progenitors 1&quot; = &quot;#D9DECF&quot;,
+    &quot;Blood progenitors 2&quot; = &quot;#C9A997&quot;,
+    &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
+    &quot;Caudal epiblast&quot; = &quot;#9E6762&quot;,
+    &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
+    &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
+    &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
+    &quot;Endothelium&quot; = &quot;#FF891C&quot;,
+    &quot;Epiblast&quot; = &quot;#635547&quot;,
+    &quot;Erythroid1&quot; = &quot;#C72228&quot;,
+    &quot;Erythroid2&quot; = &quot;#F79083&quot;,
+    &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
+    &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
+    &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
+    &quot;ExE mesoderm&quot; = &quot;#8870AD&quot;,
+    &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647A4F&quot;,
+    &quot;Gut&quot; = &quot;#EF5A9D&quot;,
+    &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
+    &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
+    &quot;Mesenchyme&quot; = &quot;#CC7818&quot;,
+    &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
+    &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
+    &quot;Neural crest&quot; = &quot;#C3C388&quot;,
+    &quot;NMP&quot; = &quot;#8EC792&quot;,
+    &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
+    &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
+    &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
+    &quot;PGC&quot; = &quot;#FACB12&quot;,
+    &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
+    &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
+    &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
+    &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
+    &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
+    &quot;Surface ectoderm&quot; = &quot;#F7F79E&quot;,
+    &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
+  )
+}
+
+boolean_colours &lt;- function(n) {
+  c(&quot;TRUE&quot; = &quot;#E15759&quot;, &quot;FALSE&quot; = &quot;#BAB0AC&quot;)
+}
+
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
+
+# Define iSEE colours
+ecm &lt;- ExperimentColorMap(
+  colData = list(
+    celltype = celltype_colours,
+    Bra = boolean_colours, 
+    Sox2 = boolean_colours, 
+    Meox1 = boolean_colours, 
+    Msgn1 = boolean_colours, 
+    Tbx6 = boolean_colours, 
+    NMP = boolean_colours, 
+    MPC = boolean_colours, 
+    PSM = boolean_colours, 
+  )
+)
+
+# Create iSEE object
+iSEE(sce, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, colormap = ecm)</code></pre>
+<p>Deploy the iSEE application to the shiny server:</p>
+<pre class="r"><code>deployApp(appDir = &quot;shiny&quot;, appName = &quot;GOUTI_2017_NMP_MNN&quot;, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
+<p>Allocate more memory to the iSEE application:</p>
+<pre class="r"><code>configureApp(appName = &quot;GOUTI_2017_NMP_MNN&quot;, appDir = &quot;shiny&quot;, size = &quot;xlarge&quot;)</code></pre>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
-<div id="output" class="section level3">
-<h3>Output</h3>
-<p>Save experiment object to disk:</p>
-<pre class="r"><code>saveRDS(sce, file = &quot;output/08-cell-cycle.rds&quot;)</code></pre>
-</div>
 <div id="session" class="section level3">
 <h3>Session</h3>
 <p>Print session information:</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.0.2 (2020-06-22)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Catalina 10.15.7
-
-Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
-
-locale:
-[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
-
-attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
-[8] methods   base     
-
-other attached packages:
- [1] org.Mm.eg.db_3.12.0         AnnotationDbi_1.52.0       
- [3] scuttle_1.0.4               scater_1.18.5              
- [5] ggplot2_3.3.3               scran_1.18.5               
- [7] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
- [9] Biobase_2.50.0              GenomicRanges_1.42.0       
-[11] GenomeInfoDb_1.26.2         IRanges_2.24.1             
-[13] S4Vectors_0.28.1            BiocGenerics_0.36.0        
-[15] MatrixGenerics_1.2.1        matrixStats_0.58.0         
-[17] workflowr_1.6.2            
-
-loaded via a namespace (and not attached):
- [1] bitops_1.0-6              fs_1.5.0                 
- [3] bit64_4.0.5               RColorBrewer_1.1-2       
- [5] rprojroot_2.0.2           tools_4.0.2              
- [7] R6_2.5.0                  irlba_2.3.3              
- [9] vipor_0.4.5               DBI_1.1.1                
-[11] colorspace_2.0-0          withr_2.4.1              
-[13] tidyselect_1.1.0          gridExtra_2.3            
-[15] bit_4.0.4                 compiler_4.0.2           
-[17] git2r_0.28.0              BiocNeighbors_1.8.2      
-[19] DelayedArray_0.16.1       labeling_0.4.2           
-[21] scales_1.1.1              stringr_1.4.0            
-[23] digest_0.6.27             rmarkdown_2.6            
-[25] XVector_0.30.0            pkgconfig_2.0.3          
-[27] htmltools_0.5.1.1         sparseMatrixStats_1.2.1  
-[29] highr_0.8                 fastmap_1.1.0            
-[31] limma_3.46.0              rlang_0.4.10             
-[33] RSQLite_2.2.3             DelayedMatrixStats_1.12.3
-[35] farver_2.0.3              generics_0.1.0           
-[37] BiocParallel_1.24.1       dplyr_1.0.4              
-[39] RCurl_1.98-1.2            magrittr_2.0.1           
-[41] BiocSingular_1.6.0        GenomeInfoDbData_1.2.4   
-[43] Matrix_1.3-2              Rcpp_1.0.6               
-[45] ggbeeswarm_0.6.0          munsell_0.5.0            
-[47] viridis_0.5.1             lifecycle_1.0.0          
-[49] stringi_1.5.3             whisker_0.4              
-[51] yaml_2.2.1                edgeR_3.32.1             
-[53] zlibbioc_1.36.0           grid_4.0.2               
-[55] blob_1.2.1                promises_1.2.0.1         
-[57] dqrng_0.2.1               crayon_1.4.1             
-[59] lattice_0.20-41           cowplot_1.1.1            
-[61] beachmat_2.6.4            locfit_1.5-9.4           
-[63] knitr_1.31                pillar_1.4.7             
-[65] igraph_1.2.6              codetools_0.2-18         
-[67] glue_1.4.2                evaluate_0.14            
-[69] renv_0.12.5               vctrs_0.3.6              
-[71] httpuv_1.5.5              gtable_0.3.0             
-[73] purrr_0.3.4               assertthat_0.2.1         
-[75] cachem_1.0.4              xfun_0.21                
-[77] rsvd_1.0.3                later_1.1.0.1            
-[79] viridisLite_0.3.0         pheatmap_1.0.12          
-[81] tibble_3.0.6              memoise_2.0.0            
-[83] beeswarm_0.2.3            bluster_1.0.0            
-[85] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
 </div>
 </div>
 
