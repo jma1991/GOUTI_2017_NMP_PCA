@@ -130,7 +130,7 @@ plotScoreHeatmap(fit, clusters = sce$cluster, fontsize = 8)
 
 Plot score distributions of labels:
 
-```{r fig.height = 20}
+```{r}
 plotScoreDistribution(fit, show = "delta.med", ncol = 3, show.nmads = 3)
 ```
 
