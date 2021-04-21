@@ -12,7 +12,7 @@
 <meta name="author" content="James Ashmore" />
 
 
-<title>Clustering</title>
+<title>Cell cycle assignment</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -441,7 +441,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Clustering</h1>
+<h1 class="title toc-ignore">Cell cycle assignment</h1>
 <h4 class="author">James Ashmore</h4>
 <h4 class="date">21 April, 2021</h4>
 
@@ -611,7 +611,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/06-clustering.Rmd</code>) and HTML (<code>docs/06-clustering.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/08-cell-cycle.Rmd</code>) and HTML (<code>docs/08-cell-cycle.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -637,78 +637,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-984254e
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-66f79f3
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-d461b1e
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-9ab487a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-21
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-a35fb40
+3fc1291
 </td>
 <td>
 James Ashmore
@@ -725,7 +657,7 @@ Build
 Rmd
 </td>
 <td>
-1c85332
+547d3be
 </td>
 <td>
 James Ashmore
@@ -746,253 +678,91 @@ Build
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<p>Set chunk options:</p>
+<p>Define chunk options:</p>
 <pre class="r"><code>knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = &quot;cache/06-clustering.Rmd/&quot;,
+  cache.path = &quot;cache/08-cell-cycle.Rmd/&quot;,
   dev        = &quot;png&quot;,
   error      = FALSE,
   message    = FALSE,
   warning    = FALSE
 )</code></pre>
-<p>Load required packages:</p>
-<pre class="r"><code>library(cluster)
-library(igraph)
-library(pheatmap)
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scran)
 library(scater)
-library(scran)</code></pre>
-<p>Read experiment data:</p>
-<pre class="r"><code>sce &lt;- readRDS(&quot;output/05-reduced-dimensions.rds&quot;)</code></pre>
+library(scuttle)
+library(org.Mm.eg.db)</code></pre>
+<p>Import experiment data:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/07-doublet-detection.rds&quot;)</code></pre>
 </div>
-<div id="graph" class="section level2">
-<h2>Graph</h2>
-<div id="walktrap" class="section level3 tabset">
-<h3 class="tabset">Walktrap</h3>
-<p>Perform clustering using rank-based weights followed by Walktrap clustering:</p>
-<pre class="r"><code>set.seed(0010010010)
+<div id="expression" class="section level2">
+<h2>Expression</h2>
+<p>Inspect the relative expression of cyclins across the clusters:</p>
+<pre class="r"><code>idx &lt;- grep(&quot;^Ccn[abde][0-9]$&quot;, rowData(sce)$gene_name)
 
-snn &lt;- buildSNNGraph(sce, type = &quot;rank&quot;, use.dimred = &quot;corrected&quot;)
+ids &lt;- rownames(sce)[idx]
 
-cls &lt;- cluster_walktrap(snn)$membership
+plotHeatmap(sce, features = sort(ids), colour_columns_by = &quot;stage&quot;, order_columns_by = &quot;cluster&quot;, cluster_rows = FALSE)</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Inspect the relative expression of cell-cycle related genes across the clusters:</p>
+<pre class="r"><code>org &lt;- select(org.Mm.eg.db, keys = &quot;GO:0007049&quot;, keytype = &quot;GOALL&quot;, column = &quot;ENSEMBL&quot;)
 
-sce$cluster_walktrap &lt;- factor(cls)</code></pre>
-<p>Calculate the modularity of each cluster:</p>
-<pre class="r"><code>mod &lt;- clusterModularity(snn, sce$cluster_walktrap, as.ratio = TRUE)
+idx &lt;- which(rowData(sce)$gene_id %in% org$ENSEMBL)
 
-mod &lt;- Matrix::forceSymmetric(mod)
+ids &lt;- rownames(sce)[idx]
 
-mod &lt;- log2(mod + 1)
-
-pal &lt;- RColorBrewer::brewer.pal(5, &quot;Greens&quot;)
-
-col &lt;- colorRampPalette(pal)(10)
-
-brk &lt;- seq(0, max(mod), length.out = 11)
-
-pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
-<pre class="r"><code>var &lt;- c(&quot;cluster_walktrap&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
-<div id="pca" class="section level4">
-<h4>PCA</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = x, shape_by = &quot;stage&quot;) + coord_fixed())
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
+plotHeatmap(sce, features = ids, colour_columns_by = &quot;stage&quot;, order_columns_by = &quot;cluster&quot;, center = TRUE, symmetric = TRUE, show_rownames = FALSE)</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="tsne" class="section level4">
-<h4>TSNE</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
+<div id="cyclone" class="section level2 tabset">
+<h2 class="tabset">Cyclone</h2>
+<p>Perform cell cycle phase classification:</p>
+<pre class="r"><code>con &lt;- system.file(&quot;exdata&quot;, &quot;mouse_cycle_markers.rds&quot;, package = &quot;scran&quot;)
 
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-<div id="umap" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
+ids &lt;- readRDS(con)
 
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-<div id="louvain" class="section level3 tabset">
-<h3 class="tabset">Louvain</h3>
-<p>Perform clustering using Jaccard-based weights followed by Louvain clustering:</p>
-<pre class="r"><code>set.seed(1111011010)
-
-snn &lt;- buildSNNGraph(sce, type = &quot;jaccard&quot;, use.dimred = &quot;corrected&quot;)
-
-cls &lt;- cluster_louvain(snn)$membership
-
-sce$cluster_louvain &lt;- factor(cls)</code></pre>
-<p>Calculate the modularity of each cluster:</p>
-<pre class="r"><code>mod &lt;- clusterModularity(snn, sce$cluster_louvain, as.ratio = TRUE)
-
-mod &lt;- Matrix::forceSymmetric(mod)
-
-mod &lt;- log2(mod + 1)
-
-pal &lt;- RColorBrewer::brewer.pal(5, &quot;Greens&quot;)
-
-col &lt;- colorRampPalette(pal)(10)
-
-brk &lt;- seq(0, max(mod), length.out = 11)
-
-pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
-<pre class="r"><code>var &lt;- c(&quot;cluster_louvain&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
-<div id="pca-1" class="section level4">
-<h4>PCA</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = x, shape_by = &quot;stage&quot;) + coord_fixed())
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-<div id="tsne-1" class="section level4">
-<h4>TSNE</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-<div id="umap-1" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-</div>
-<div id="supervised" class="section level2">
-<h2>Supervised</h2>
-<div id="k-means" class="section level3 tabset">
-<h3 class="tabset">K-means</h3>
-<p>Perform k-means clustering on the PCA matrix:</p>
-<pre class="r"><code>set.seed(1001110111)
-
-dim &lt;- reducedDim(sce, &quot;corrected&quot;)
-
-gap &lt;- clusGap(dim, kmeans, K.max = 20)
-
-num &lt;- maxSE(gap$Tab[, &quot;gap&quot;], gap$Tab[, &quot;SE.sim&quot;])</code></pre>
-<p>Inspect gap statistic rate:</p>
-<pre class="r"><code>dat &lt;- data.frame(var = seq_len(gap$call$K.max), val = gap$Tab[, &quot;gap&quot;])
-
-ggplot(dat, aes(var, val)) +
-  geom_point() +
-  geom_vline(xintercept = num, colour = &quot;red&quot;) +
-  labs(x = &quot;Number of clusters&quot;, y = &quot;Gap statistic&quot;) +
+fit &lt;- cyclone(sce, pairs = ids, gene.names = rowData(sce)$gene_id)</code></pre>
+<p>Assign cell cycle phase:</p>
+<pre class="r"><code>sce$phase &lt;- fit$phases</code></pre>
+<p>Plot cell cycle phase scores:</p>
+<pre class="r"><code>ggplot(fit$scores, aes(G1, G2M, colour = fit$phases)) + 
+  geom_point() + 
+  scale_colour_brewer(name = &quot;Phase&quot;, palette = &quot;Set1&quot;) + 
   theme_bw()</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Select optimal number of clusters:</p>
-<pre class="r"><code>set.seed(1001110111)
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot cell cycle phase by cluster:</p>
+<pre class="r"><code>dat &lt;- makePerCellDF(sce, use.coldata = c(&quot;cluster&quot;, &quot;phase&quot;))
 
-cls &lt;- kmeans(dim, centers = num)
-
-sce$cluster_kmeans &lt;- factor(cls$cluster)</code></pre>
-<p>Check the number of clusters before plotting:</p>
-<pre class="r"><code>run &lt;- ifelse(num &gt; 1, TRUE, FALSE)</code></pre>
-<p>Plot the distances between clusters using their centroids:</p>
-<pre class="r"><code>tab &lt;- tabulate(cls$cluster)
-
-dat &lt;- data.frame(wcss = cls$withinss, ncells = tab)
-
-dat$rms &lt;- sqrt(dat$wcss / dat$ncells)
-
-hcl &lt;- hclust(stats::dist(cls$centers), method = &quot;ward.D2&quot;)
-
-plot(hcl)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
-<pre class="r"><code>var &lt;- c(&quot;cluster_kmeans&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
-<div id="pca-2" class="section level4">
-<h4>PCA</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = x, shape_by = &quot;stage&quot;) + coord_fixed())
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+ggplot(dat, aes(cluster)) + 
+  geom_bar(aes(fill = phase)) + 
+  scale_fill_brewer(name = &quot;Phase&quot;, palette = &quot;Set1&quot;) + 
+  labs(x = &quot;Cluster&quot;, y = &quot;Count&quot;) + 
+  theme_bw()</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plot cell cycle phase by embedding:</p>
+<div id="pca" class="section level3">
+<h3>PCA</h3>
+<pre class="r"><code>plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="tsne-2" class="section level4">
-<h4>TSNE</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-23-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div id="tsne" class="section level3">
+<h3>TSNE</h3>
+<pre class="r"><code>plotTSNE(sce, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="umap-2" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-24-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div id="umap" class="section level3">
+<h3>UMAP</h3>
+<pre class="r"><code>plotUMAP(sce, colour_by = &quot;phase&quot;, shape_by = &quot;stage&quot;, text_by = &quot;cluster&quot;)</code></pre>
+<p><img src="figure/08-cell-cycle.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-</div>
-</div>
-<div id="unsupervised" class="section level2">
-<h2>Unsupervised</h2>
-<div id="hierarchical" class="section level3 tabset">
-<h3 class="tabset">Hierarchical</h3>
-<p>Perform hierarchical cluster analysis on the PCA data:</p>
-<pre class="r"><code>set.seed(1011101111)
-
-dim &lt;- reducedDim(sce, &quot;corrected&quot;)
-
-dst &lt;- dist(dim)
-
-cls &lt;- hclust(dst, &quot;ward.D2&quot;)
-
-mat &lt;- as.matrix(dst)
-
-cut &lt;- dynamicTreeCut::cutreeDynamic(cls, distM = mat)</code></pre>
-<pre><code> ..cutHeight not given, setting it to 0.942  ===&gt;  99% of the (truncated) height range in dendro.
- ..done.</code></pre>
-<pre class="r"><code>sce$cluster_hclust &lt;- factor(cut)</code></pre>
-<p>Calculate the modularity of each cluster:</p>
-<pre class="r"><code>sil &lt;- silhouette(cut, dist = dst)
-
-col &lt;- seq_len(nlevels(sce$cluster_hclust))
-
-plot(sil, col = col, border = NA)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Inspect dimensionality reduction plots coloured by explanatory variables:</p>
-<pre class="r"><code>var &lt;- c(&quot;cluster_hclust&quot;, &quot;sum&quot;, &quot;detected&quot;, &quot;altexps_spike_percent&quot;)</code></pre>
-<div id="pca-3" class="section level4">
-<h4>PCA</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotReducedDim(sce, dimred = &quot;corrected&quot;, colour_by = x, shape_by = &quot;stage&quot;) + coord_fixed())
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-28-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-<div id="tsne-3" class="section level4">
-<h4>TSNE</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-29-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-<div id="umap-3" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;) + theme(aspect.ratio = 1))
-
-patchwork::wrap_plots(plt)</code></pre>
-<p><img src="figure/06-clustering.Rmd/unnamed-chunk-30-1.png" width="960" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-</div>
-<div id="selection" class="section level2">
-<h2>Selection</h2>
-<p>Choose clustering method for downstream analysis:</p>
-<pre class="r"><code>sce$cluster &lt;- sce$cluster_louvain</code></pre>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
 <div id="output" class="section level3">
 <h3>Output</h3>
 <p>Save experiment object to disk:</p>
-<pre class="r"><code>saveRDS(sce, file = &quot;output/06-clustering.rds&quot;)</code></pre>
+<pre class="r"><code>saveRDS(sce, file = &quot;output/08-cell-cycle.rds&quot;)</code></pre>
 </div>
 <div id="session" class="section level3">
 <h3>Session</h3>
@@ -1014,57 +784,60 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] scran_1.18.5                scater_1.18.5              
- [3] ggplot2_3.3.3               SingleCellExperiment_1.12.0
- [5] SummarizedExperiment_1.20.0 Biobase_2.50.0             
- [7] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
- [9] IRanges_2.24.1              S4Vectors_0.28.1           
-[11] BiocGenerics_0.36.0         MatrixGenerics_1.2.1       
-[13] matrixStats_0.58.0          pheatmap_1.0.12            
-[15] igraph_1.2.6                cluster_2.1.1              
+ [1] org.Mm.eg.db_3.12.0         AnnotationDbi_1.52.0       
+ [3] scuttle_1.0.4               scater_1.18.5              
+ [5] ggplot2_3.3.3               scran_1.18.5               
+ [7] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
+ [9] Biobase_2.50.0              GenomicRanges_1.42.0       
+[11] GenomeInfoDb_1.26.2         IRanges_2.24.1             
+[13] S4Vectors_0.28.1            BiocGenerics_0.36.0        
+[15] MatrixGenerics_1.2.1        matrixStats_0.58.0         
 [17] workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
  [1] bitops_1.0-6              fs_1.5.0                 
- [3] RColorBrewer_1.1-2        rprojroot_2.0.2          
- [5] dynamicTreeCut_1.63-1     tools_4.0.2              
+ [3] bit64_4.0.5               RColorBrewer_1.1-2       
+ [5] rprojroot_2.0.2           tools_4.0.2              
  [7] R6_2.5.0                  irlba_2.3.3              
  [9] vipor_0.4.5               DBI_1.1.1                
 [11] colorspace_2.0-0          withr_2.4.1              
 [13] tidyselect_1.1.0          gridExtra_2.3            
-[15] compiler_4.0.2            git2r_0.28.0             
-[17] BiocNeighbors_1.8.2       DelayedArray_0.16.1      
-[19] labeling_0.4.2            scales_1.1.1             
-[21] stringr_1.4.0             digest_0.6.27            
-[23] rmarkdown_2.6             XVector_0.30.0           
-[25] pkgconfig_2.0.3           htmltools_0.5.1.1        
-[27] sparseMatrixStats_1.2.1   limma_3.46.0             
-[29] highr_0.8                 rlang_0.4.10             
-[31] DelayedMatrixStats_1.12.3 farver_2.0.3             
-[33] generics_0.1.0            BiocParallel_1.24.1      
-[35] dplyr_1.0.4               RCurl_1.98-1.2           
-[37] magrittr_2.0.1            BiocSingular_1.6.0       
-[39] GenomeInfoDbData_1.2.4    scuttle_1.0.4            
-[41] patchwork_1.1.1           Matrix_1.3-2             
-[43] Rcpp_1.0.6                ggbeeswarm_0.6.0         
-[45] munsell_0.5.0             viridis_0.5.1            
-[47] lifecycle_1.0.0           stringi_1.5.3            
-[49] whisker_0.4               yaml_2.2.1               
-[51] edgeR_3.32.1              zlibbioc_1.36.0          
-[53] grid_4.0.2                promises_1.2.0.1         
-[55] dqrng_0.2.1               crayon_1.4.1             
-[57] lattice_0.20-41           cowplot_1.1.1            
-[59] beachmat_2.6.4            locfit_1.5-9.4           
-[61] knitr_1.31                pillar_1.4.7             
-[63] codetools_0.2-18          glue_1.4.2               
-[65] evaluate_0.14             renv_0.12.5              
-[67] vctrs_0.3.6               httpuv_1.5.5             
-[69] gtable_0.3.0              purrr_0.3.4              
-[71] assertthat_0.2.1          xfun_0.21                
-[73] rsvd_1.0.3                later_1.1.0.1            
-[75] viridisLite_0.3.0         tibble_3.0.6             
-[77] beeswarm_0.2.3            bluster_1.0.0            
-[79] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
+[15] bit_4.0.4                 compiler_4.0.2           
+[17] git2r_0.28.0              BiocNeighbors_1.8.2      
+[19] DelayedArray_0.16.1       labeling_0.4.2           
+[21] scales_1.1.1              stringr_1.4.0            
+[23] digest_0.6.27             rmarkdown_2.6            
+[25] XVector_0.30.0            pkgconfig_2.0.3          
+[27] htmltools_0.5.1.1         sparseMatrixStats_1.2.1  
+[29] highr_0.8                 fastmap_1.1.0            
+[31] limma_3.46.0              rlang_0.4.10             
+[33] RSQLite_2.2.3             DelayedMatrixStats_1.12.3
+[35] farver_2.0.3              generics_0.1.0           
+[37] BiocParallel_1.24.1       dplyr_1.0.4              
+[39] RCurl_1.98-1.2            magrittr_2.0.1           
+[41] BiocSingular_1.6.0        GenomeInfoDbData_1.2.4   
+[43] Matrix_1.3-2              Rcpp_1.0.6               
+[45] ggbeeswarm_0.6.0          munsell_0.5.0            
+[47] viridis_0.5.1             lifecycle_1.0.0          
+[49] stringi_1.5.3             whisker_0.4              
+[51] yaml_2.2.1                edgeR_3.32.1             
+[53] zlibbioc_1.36.0           grid_4.0.2               
+[55] blob_1.2.1                promises_1.2.0.1         
+[57] dqrng_0.2.1               crayon_1.4.1             
+[59] lattice_0.20-41           cowplot_1.1.1            
+[61] beachmat_2.6.4            locfit_1.5-9.4           
+[63] knitr_1.31                pillar_1.4.7             
+[65] igraph_1.2.6              codetools_0.2-18         
+[67] glue_1.4.2                evaluate_0.14            
+[69] renv_0.12.5               vctrs_0.3.6              
+[71] httpuv_1.5.5              gtable_0.3.0             
+[73] purrr_0.3.4               assertthat_0.2.1         
+[75] cachem_1.0.4              xfun_0.21                
+[77] rsvd_1.0.3                later_1.1.0.1            
+[79] viridisLite_0.3.0         pheatmap_1.0.12          
+[81] tibble_3.0.6              memoise_2.0.0            
+[83] beeswarm_0.2.3            bluster_1.0.0            
+[85] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
 </div>
 </div>
 
