@@ -440,7 +440,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Dimensionality reduction</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">16 April, 2021</h4>
+<h4 class="date">21 April, 2021</h4>
 
 </div>
 
@@ -465,13 +465,13 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-16
+<strong>Last updated:</strong> 2021-04-21
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
-<strong>Knit directory:</strong> <code>E-MTAB-5208/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+<strong>Knit directory:</strong> <code>unintegrated-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong477349a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 477349a </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong0bf6d95"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 0bf6d95 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong477349a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong0bf6d95" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 477349a. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 0bf6d95. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -574,14 +574,12 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/cache/
-    Ignored:    pipeline/
 
 Untracked files:
     Untracked:  _workflowr.R
     Untracked:  analysis/08-marker-detection.Rmd
     Untracked:  analysis/09-cell-annotation.Rmd
-    Untracked:  analysis/10-atlas-integration.Rmd
-    Untracked:  analysis/interactive.Rmd
+    Untracked:  code/cleanEmbryoAtlasData.R
     Untracked:  renv.lock
     Untracked:  renv/
 
@@ -589,7 +587,18 @@ Unstaged changes:
     Modified:   .Rprofile
     Modified:   .gitignore
     Modified:   _workflowr.yml
+    Deleted:    analysis/04-data-integration.Rmd
+    Modified:   analysis/05-clustering.Rmd
+    Deleted:    analysis/05-reduced-dimensions.Rmd
+    Deleted:    analysis/06-clustering.Rmd
+    Modified:   analysis/06-doublet-detection.Rmd
+    Modified:   analysis/07-cell-cycle.Rmd
+    Deleted:    analysis/07-doublet-detection.Rmd
+    Deleted:    analysis/08-cell-cycle.Rmd
+    Deleted:    analysis/09-marker-detection.Rmd
+    Deleted:    analysis/10-cell-annotation.Rmd
     Modified:   analysis/_site.yml
+    Modified:   analysis/interactive.Rmd
 
 </code></pre>
 <p>
@@ -628,6 +637,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+0bf6d95
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+90b8dc4
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -800,12 +843,13 @@ Build
   message    = FALSE,
   warning    = FALSE
 )</code></pre>
-<p>Load required packages:</p>
-<pre class="r"><code>library(BiocSingular)
-library(patchwork)
-library(pheatmap)
-library(scater)
-library(scran)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scater)
+library(scran)
+library(scuttle)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(patchwork)
+library(pheatmap)</code></pre>
 <p>Read experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;output/03-feature-selection.rds&quot;)</code></pre>
 </div>
@@ -814,9 +858,9 @@ library(scran)</code></pre>
 <div id="calculate-pca" class="section level3">
 <h3>Calculate PCA</h3>
 <p>Perform a principal components analysis (PCA) on the expression data:</p>
-<pre class="r"><code>set.seed(0101011011)
+<pre class="r"><code>set.seed(350941161)
 
-sce &lt;- runPCA(sce, subset_row = rowData(sce)$selected, BSPARAM = ExactParam())</code></pre>
+sce &lt;- runPCA(sce, subset_row = rowData(sce)$selected, BSPARAM = BiocSingular::ExactParam())</code></pre>
 <p>Cluster cells to help examine separation of clusters by principal components:</p>
 <pre class="r"><code>snn &lt;- buildSNNGraph(sce, use.dimred = &quot;PCA&quot;)
 
@@ -842,44 +886,7 @@ ggplot(dat, aes(index, total)) +
   scale_x_continuous(n.breaks = 10, limits = c(0, NA)) +
   scale_y_continuous(n.breaks = 10, limits = c(0, NA)) +
   theme_minimal()</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="technical" class="section level3">
 <h3>Technical</h3>
@@ -921,49 +928,12 @@ ggplot(dat, aes(n.pcs, n.clusters)) +
   geom_vline(xintercept = num, colour = &quot;grey&quot;, linetype = &quot;dashed&quot;) +
   labs(x = &quot;PC&quot;, y = &quot;Number of clusters&quot;) +
   theme_minimal()</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
-Past versions of unnamed-chunk-11-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-11-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="selection" class="section level3">
 <h3>Selection</h3>
 <p>Choose number of PCs to retain from the above analyses:</p>
-<pre class="r"><code>num &lt;- 6
+<pre class="r"><code>num &lt;- 5
 
 len &lt;- seq_len(num)
 
@@ -971,45 +941,8 @@ dim &lt;- reducedDim(sce, &quot;PCA&quot;)
 
 reducedDim(sce, &quot;PCA&quot;) &lt;- dim[, len]</code></pre>
 <p>Plot scatter matrix of retained PCs:</p>
-<pre class="r"><code>plotPCA(sce, colour_by = &quot;cluster&quot;, shape_by = &quot;stage&quot;, ncomponents = num) + theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<pre class="r"><code>plotReducedDim(sce, dimred = &quot;PCA&quot;, colour_by = &quot;cluster&quot;, shape_by = &quot;stage&quot;, ncomponents = num) + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>Cluster cells to help examine effect of TSNE and UMAP hyper-parameters:</p>
 <pre class="r"><code>snn &lt;- buildSNNGraph(sce, use.dimred = &quot;PCA&quot;)
 
@@ -1051,51 +984,14 @@ plt &lt;- apply(arg, 1, function(x) {
 })
 
 wrap_plots(plt, nrow = 6, ncol = 6, byrow = FALSE)</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="calculate-tsne" class="section level3">
 <h3>Calculate TSNE</h3>
 <p>Select optimal perplexity value and number of iterations:</p>
 <pre class="r"><code>set.seed(1100010100)
 
-sce &lt;- runTSNE(sce, dimred = &quot;PCA&quot;, perplexity = 31, max_iter = 1500)</code></pre>
+sce &lt;- runTSNE(sce, dimred = &quot;PCA&quot;, perplexity = 25, max_iter = 1500)</code></pre>
 </div>
 </div>
 <div id="umap" class="section level2">
@@ -1129,51 +1025,14 @@ plt &lt;- apply(arg, 1, function(x) {
 })
 
 wrap_plots(plt, nrow = 6, ncol = 6, byrow = FALSE)</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="calculate-umap" class="section level3">
 <h3>Calculate UMAP</h3>
 <p>Select optimal number of nearest neighbors:</p>
 <pre class="r"><code>set.seed(1010100110)
 
-sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;, n_neighbors = 21, min_dist = 0.2)</code></pre>
+sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;, n_neighbors = 41, min_dist = 0.2)</code></pre>
 </div>
 </div>
 <div id="variables" class="section level2 tabset">
@@ -1182,64 +1041,7 @@ sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;, n_neighbors = 21, min_dist = 0.
 <h3>PCA</h3>
 <pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_spike_percent&quot;)
 
-plt &lt;- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = &quot;stage&quot;))
-
-patchwork::wrap_plots(plt, ncol = 2)</code></pre>
-<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
-Past versions of unnamed-chunk-19-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-19-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-4846616
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-<tr>
-<td>
-c92101a
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="tsne-1" class="section level3">
-<h3>TSNE</h3>
-<pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_spike_percent&quot;)
-
-plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;))
+plt &lt;- lapply(var, function(x) plotReducedDim(sce, dimred = &quot;PCA&quot;, colour_by = x, shape_by = &quot;stage&quot;))
 
 patchwork::wrap_plots(plt, ncol = 2)</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1303,11 +1105,11 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="umap-1" class="section level3">
-<h3>UMAP</h3>
+<div id="tsne-1" class="section level3">
+<h3>TSNE</h3>
 <pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_spike_percent&quot;)
 
-plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;))
+plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x, shape_by = &quot;stage&quot;))
 
 patchwork::wrap_plots(plt, ncol = 2)</code></pre>
 <p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1371,6 +1173,15 @@ James Ashmore
 </div>
 </div>
 </div>
+<div id="umap-1" class="section level3">
+<h3>UMAP</h3>
+<pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_spike_percent&quot;)
+
+plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x, shape_by = &quot;stage&quot;))
+
+patchwork::wrap_plots(plt, ncol = 2)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
@@ -1399,33 +1210,33 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] scran_1.18.5                scater_1.18.5              
- [3] ggplot2_3.3.3               SingleCellExperiment_1.12.0
- [5] SummarizedExperiment_1.20.0 Biobase_2.50.0             
- [7] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
- [9] IRanges_2.24.1              S4Vectors_0.28.1           
-[11] BiocGenerics_0.36.0         MatrixGenerics_1.2.1       
-[13] matrixStats_0.58.0          pheatmap_1.0.12            
-[15] patchwork_1.1.1             BiocSingular_1.6.0         
+ [1] pheatmap_1.0.12             patchwork_1.1.1            
+ [3] scuttle_1.0.4               scran_1.18.5               
+ [5] scater_1.18.5               ggplot2_3.3.3              
+ [7] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
+ [9] Biobase_2.50.0              GenomicRanges_1.42.0       
+[11] GenomeInfoDb_1.26.7         IRanges_2.24.1             
+[13] S4Vectors_0.28.1            BiocGenerics_0.36.0        
+[15] MatrixGenerics_1.2.1        matrixStats_0.58.0         
 [17] workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
   [1] Rtsne_0.15                ggbeeswarm_0.6.0         
   [3] colorspace_2.0-0          ellipsis_0.3.1           
   [5] class_7.3-18              mclust_5.4.7             
-  [7] rprojroot_2.0.2           scuttle_1.0.4            
-  [9] bluster_1.0.0             XVector_0.30.0           
- [11] BiocNeighbors_1.8.2       fs_1.5.0                 
- [13] farver_2.0.3              ggrepel_0.9.1            
- [15] DT_0.17                   RSpectra_0.16-0          
- [17] codetools_0.2-18          leaps_3.1                
- [19] sparseMatrixStats_1.2.1   knitr_1.31               
- [21] mmand_1.6.1               mda_0.5-2                
- [23] cluster_2.1.1             png_0.1-7                
- [25] uwot_0.1.10               compiler_4.0.2           
- [27] dqrng_0.2.1               assertthat_0.2.1         
- [29] Matrix_1.3-2              limma_3.46.0             
- [31] later_1.1.0.1             tcltk2_1.2-11            
+  [7] rprojroot_2.0.2           bluster_1.0.0            
+  [9] XVector_0.30.0            BiocNeighbors_1.8.2      
+ [11] fs_1.5.0                  farver_2.0.3             
+ [13] ggrepel_0.9.1             DT_0.17                  
+ [15] RSpectra_0.16-0           codetools_0.2-18         
+ [17] leaps_3.1                 sparseMatrixStats_1.2.1  
+ [19] knitr_1.31                mmand_1.6.1              
+ [21] mda_0.5-2                 cluster_2.1.1            
+ [23] png_0.1-7                 uwot_0.1.10              
+ [25] compiler_4.0.2            dqrng_0.2.1              
+ [27] assertthat_0.2.1          Matrix_1.3-2             
+ [29] limma_3.46.0              later_1.1.0.1            
+ [31] BiocSingular_1.6.0        tcltk2_1.2-11            
  [33] htmltools_0.5.1.1         tools_4.0.2              
  [35] rsvd_1.0.3                igraph_1.2.6             
  [37] gtable_0.3.0              glue_1.4.2               
@@ -1452,7 +1263,7 @@ loaded via a namespace (and not attached):
  [79] cowplot_1.1.1             tidyselect_1.1.0         
  [81] plyr_1.8.6                magrittr_2.0.1           
  [83] R6_2.5.0                  generics_0.1.0           
- [85] DelayedArray_0.16.1       DBI_1.1.1                
+ [85] DelayedArray_0.16.3       DBI_1.1.1                
  [87] pillar_1.4.7              whisker_0.4              
  [89] withr_2.4.1               sp_1.4-5                 
  [91] nnet_7.3-15               scatterplot3d_0.3-41     
