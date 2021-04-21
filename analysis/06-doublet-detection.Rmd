@@ -23,11 +23,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
 library(scater)
 library(scran)
+library(scuttle)
 ```
 
 Read experiment data:
@@ -128,7 +129,7 @@ Inspect the distribution of doublet scores on reduced dimensions:
 #### PCA
 
 ```{r}
-plotPCA(sce, colour_by = "doublet_score", shape_by = "stage")
+plotReducedDim(sce, dimred = "PCA", colour_by = "doublet_score", shape_by = "stage")
 ```
 
 #### TSNE

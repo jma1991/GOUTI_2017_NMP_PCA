@@ -82,7 +82,7 @@ var <- c("cluster_walktrap", "sum", "detected", "altexps_spike_percent")
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage") + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x, shape_by = "stage") + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -144,7 +144,7 @@ var <- c("cluster_louvain", "sum", "detected", "altexps_spike_percent")
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage") + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x, shape_by = "stage") + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -232,7 +232,7 @@ var <- c("cluster_kmeans", "sum", "detected", "altexps_spike_percent")
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage") + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x, shape_by = "stage") + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -294,7 +294,7 @@ var <- c("cluster_hclust", "sum", "detected", "altexps_spike_percent")
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage") + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x, shape_by = "stage") + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```

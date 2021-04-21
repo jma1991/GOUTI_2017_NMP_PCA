@@ -23,13 +23,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-Attach required packages:
+Load Bioconductor packages:
 
 ```{r}
-library(SingleR)
 library(scran)
-library(scRNAseq)
 library(scater)
+library(scuttle)
 library(org.Mm.eg.db)
 ```
 
@@ -51,7 +50,7 @@ ids <- rownames(sce)[idx]
 plotHeatmap(sce, features = sort(ids), colour_columns_by = "stage", order_columns_by = "cluster", cluster_rows = FALSE)
 ```
 
-Inspect the relative expession of cell-cycle related genes across the clusters:
+Inspect the relative expression of cell-cycle related genes across the clusters:
 
 ```{r}
 org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
@@ -63,48 +62,51 @@ ids <- rownames(sce)[idx]
 plotHeatmap(sce, features = ids, colour_columns_by = "stage", order_columns_by = "cluster", center = TRUE, symmetric = TRUE, show_rownames = FALSE)
 ```
 
-## Reference {.tabset}
+## Cyclone {.tabset}
 
-Obtain and normalize the Buettner ESC data:
-
-```{r}
-ref <- BuettnerESCData()
-
-ref <- logNormCounts(ref)
-```
-
-Identify top markers between cell cycle phases:
+Perform cell cycle phase classification:
 
 ```{r}
-org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
+con <- system.file("exdata", "mouse_cycle_markers.rds", package = "scran")
 
-ids <- Reduce(intersect, list(rownames(ref), rowData(sce)$gene_id, org$ENSEMBL))
+ids <- readRDS(con)
 
-res <- pairwiseWilcox(logcounts(ref), ref$phase, direction = "up", subset.row = ids)
-
-top <- getTopMarkers(res$statistics, res$pairs)
+fit <- cyclone(sce, pairs = ids, gene.names = rowData(sce)$gene_id)
 ```
 
-Use reference data to assign phase to test data:
+Assign cell cycle phase:
 
 ```{r}
-ids <- rownames(sce) # save original feature names
-
-rownames(sce) <- rowData(sce)$gene_id # make feature names compatible
-
-fit <- SingleR(test = sce, ref = ref, label = ref$phase, genes = top)
-
-rownames(sce) <- ids # return original feature names
-
-sce$phase <- factor(fit$labels, levels = c("G1", "G2M", "S"))
+sce$phase <- fit$phases
 ```
 
-Inspect the distribution of cell-cycle phases on reduced dimensions:
+Plot cell cycle phase scores:
+
+```{r}
+ggplot(fit$scores, aes(G1, G2M, colour = fit$phases)) + 
+  geom_point() + 
+  scale_colour_brewer(name = "Phase", palette = "Set1") + 
+  theme_bw()
+```
+
+Plot cell cycle phase by cluster:
+
+```{r}
+dat <- makePerCellDF(sce, use.coldata = c("cluster", "phase"))
+
+ggplot(dat, aes(cluster)) + 
+  geom_bar(aes(fill = phase)) + 
+  scale_fill_brewer(name = "Phase", palette = "Set1") + 
+  labs(x = "Cluster", y = "Count") + 
+  theme_bw()
+```
+
+Plot cell cycle phase by embedding:
 
 ### PCA
 
 ```{r}
-plotPCA(sce, colour_by = "phase", shape_by = "stage", text_by = "cluster")
+plotReducedDim(sce, dimred = "PCA", colour_by = "phase", shape_by = "stage", text_by = "cluster")
 ```
 
 ### TSNE
