@@ -118,23 +118,15 @@ rowData(sce)$blacklist[idx] <- TRUE
 Model the per-gene variance
 
 ```{r}
-dec <- modelGeneVar(sce, block = sce$stage)
+dec <- modelGeneVar(sce)
 
-ids <- colnames(dec$per.block)
-
-plt <- lapply(ids, function(i) {
+dat <- as.data.frame(dec)
   
-  dat <- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = "grey") + 
-    geom_line(aes(y = tech)) + 
-    labs(title = i, x = "Mean of log-expression", y = "Variance of log-expression") + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = "grey") + 
+  geom_line(aes(y = tech)) + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") + 
+  theme_minimal()
 
 metadata(sce)$modelGeneVar <- dec
 ```
@@ -144,25 +136,17 @@ metadata(sce)$modelGeneVar <- dec
 Model the per-gene CV2:
 
 ```{r}
-dec <- modelGeneCV2(sce, block = sce$stage)
+dec <- modelGeneCV2(sce)
 
-ids <- colnames(dec$per.block)
-
-plt <- lapply(ids, function(i) {
+dat <- as.data.frame(dec)
   
-  dat <- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = "grey") + 
-    geom_line(aes(y = trend)) + 
-    scale_x_log10() + 
-    scale_y_log10() + 
-    labs(title = i, x = "Mean of log-expression", y = "Variance of log-expression") + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = "grey") + 
+  geom_line(aes(y = trend)) + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") + 
+  theme_minimal()
 
 metadata(sce)$modelGeneCV2 <- dec
 ```
@@ -172,28 +156,20 @@ metadata(sce)$modelGeneCV2 <- dec
 Model the per-gene variance with spike-ins:
 
 ```{r eval = FALSE}
-dec <- modelGeneVarWithSpikes(sce, spikes = "spike", block = sce$stage)
+dec <- modelGeneVarWithSpikes(sce, spikes = "spike")
 
-ids <- colnames(dec$per.block)
+alt <- metadata(dec)
 
-plt <- lapply(ids, function(i) {
-  
-  dat <- dec$per.block[[i]]
-  
-  alt <- metadata(dec)
-  
-  df1 <- as.data.frame(dec)
-  
-  df2 <- data.frame(mean = alt$mean, total = alt$var)
-  
-  ggplot(df1, aes(mean, total)) + 
-    geom_point(colour = "grey") + 
-    geom_line(aes(mean, tech)) + 
-    geom_point(data = df2, aes(mean, total), colour = "red") + 
-    labs(title = i, x = "Mean of log-expression", y = "Variance of log-expression") + 
-    theme_minimal()
+df1 <- as.data.frame(dec)
 
-})
+df2 <- data.frame(mean = alt$mean, total = alt$var)
+
+ggplot(df1, aes(mean, total)) + 
+  geom_point(colour = "grey") + 
+  geom_line(aes(mean, tech)) + 
+  geom_point(data = df2, aes(mean, total), colour = "red") + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") + 
+  theme_minimal()
 
 metadata(sce)$modelGeneVarWithSpikes <- dec
 ```
@@ -203,32 +179,22 @@ metadata(sce)$modelGeneVarWithSpikes <- dec
 Model the per-gene CV2 with spike-ins:
 
 ```{r eval = FALSE}
-dec <- modelGeneCV2WithSpikes(sce, spikes = "spike", block = sce$stage)
+dec <- modelGeneCV2WithSpikes(sce, spikes = "spike")
 
-ids <- colnames(dec$per.block)
+alt <- metadata(dec)
 
-plt <- lapply(ids, function(i) {
-  
-  dat <- dec$per.block[[i]]
-  
-  alt <- metadata(dat)
-  
-  df1 <- as.data.frame(dat)
-  
-  df2 <- data.frame(mean = alt$mean, cv2 = alt$cv2)
-  
-  ggplot(df1, aes(mean, total)) + 
-    geom_point(colour = "grey") + 
-    geom_line(aes(mean, trend)) + 
-    geom_point(data = df2, aes(mean, cv2), colour = "red") + 
-    scale_x_log10() + 
-    scale_y_log10() + 
-    labs(title = i, x = "Mean of log-expression", y = "Variance of log-expression") + 
-    theme_minimal()
-  
-})
+df1 <- as.data.frame(dec)
 
-wrap_plots(plt)
+df2 <- data.frame(mean = alt$mean, cv2 = alt$cv2)
+
+ggplot(df1, aes(mean, total)) + 
+  geom_point(colour = "grey") + 
+  geom_line(aes(mean, trend)) + 
+  geom_point(data = df2, aes(mean, cv2), colour = "red") + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") + 
+  theme_minimal()
 
 metadata(sce)$modelGeneCV2WithSpikes <- dec
 ```
@@ -238,23 +204,15 @@ metadata(sce)$modelGeneCV2WithSpikes <- dec
 Model the per-gene variance with Poisson noise:
 
 ```{r}
-dec <- modelGeneVarByPoisson(sce, block = sce$stage)
+dec <- modelGeneVarByPoisson(sce)
 
-ids <- colnames(dec$per.block)
-
-plt <- lapply(ids, function(i) {
+dat <- as.data.frame(dec)
   
-  dat <- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = "grey") + 
-    geom_line(aes(y = tech)) + 
-    labs(title = i, x = "Mean of log-expression", y = "Variance of log-expression") + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = "grey") + 
+  geom_line(aes(y = tech)) + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") + 
+  theme_minimal()
 
 metadata(sce)$modelGeneVarByPoisson <- dec
 ```
