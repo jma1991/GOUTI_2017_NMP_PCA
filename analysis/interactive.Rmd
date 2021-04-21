@@ -74,7 +74,7 @@ assay(sce, "rescaled") <- scales::rescale(x = as.matrix(assay(sce, "reconstructe
 
 # Redefine Brachyury feature name
 ind <- which(rowData(sce)$gene_id == "ENSMUSG00000062327")
-rowData(sce$gene_name[ind] <- "Bra"
+rowData(sce)$gene_name[ind] <- "Bra"
 
 # Make feature names unique
 rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
