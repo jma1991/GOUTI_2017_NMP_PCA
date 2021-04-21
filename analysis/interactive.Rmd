@@ -61,7 +61,7 @@ library(iSEE)
 library(SingleCellExperiment)
 
 # Load experiment object
-sce <- readRDS("output/10-cell-annotation.rds")
+sce <- readRDS("data.rds")
 
 # Clear metadata list
 metadata(sce) <- list()
