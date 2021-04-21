@@ -69,7 +69,7 @@ metadata(sce) <- list()
 # ReOrder assays
 assays(sce) <- assays(sce)[c("counts", "logcounts", "reconstructed")]
 
-# Rescale reconstucted assay
+# Rescale reconstructed assay
 assay(sce, "rescaled") <- scales::rescale(x = as.matrix(assay(sce, "reconstructed")), to = c(0, 100))
 
 # Redefine Brachyury feature name
