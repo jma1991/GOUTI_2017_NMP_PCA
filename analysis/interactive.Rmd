@@ -1,0 +1,189 @@
+---
+title: "Interactive data exploration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+Load CRAN packages:
+
+```{r}
+library(rsconnect)
+```
+
+Include Bioconductor package repositories:
+
+```{r}
+options(repos = BiocManager::repositories())
+```
+
+Automatically answer yes to any user prompt:
+
+```{r}
+options(needs.promptUser = FALSE)
+```
+
+Delete existing shiny directory:
+
+```{r}
+unlink("shiny", recursive = TRUE)
+```
+
+Create shiny directory for interactive data exploration:
+
+```{r}
+dir.create("shiny", showWarnings = FALSE, mode = "0755")
+```
+
+## Application {.tabset}
+
+Copy data to iSEE directory:
+
+```{r}
+file.copy("output/10-cell-annotation.rds", "shiny/data.rds", overwrite = TRUE)
+```
+
+Write code to iSEE application file:
+
+```{cat, engine.opts = list(file = "shiny/app.R"), class.source = "r"}
+# Load required packages
+library(iSEE)
+library(SingleCellExperiment)
+
+# Load experiment object
+sce <- readRDS("output/10-cell-annotation.rds")
+
+# Clear metadata list
+metadata(sce) <- list()
+
+# ReOrder assays
+assays(sce) <- assays(sce)[c("counts", "logcounts", "reconstructed")]
+
+# Rescale reconstucted assay
+assay(sce, "rescaled") <- scales::rescale(x = as.matrix(assay(sce, "reconstructed")), to = c(0, 100))
+
+# Redefine Brachyury feature name
+ind <- which(rowData(sce)$gene_id == "ENSMUSG00000062327")
+rowData(sce$gene_name[ind] <- "Bra"
+
+# Make feature names unique
+rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+
+# Clear rowData variables
+rowData(sce)$rotation <- NULL
+
+# Define population markers
+sce$Bra <- counts(sce)["Bra", ] > 0
+sce$Sox2 <- counts(sce)["Sox2", ] > 0
+sce$Meox1 <- counts(sce)["Meox1", ] > 0
+sce$Msgn1 <- counts(sce)["Msgn1", ] > 0
+sce$Tbx6 <- counts(sce)["Tbx6", ] > 0
+sce$NMP <- sce$Bra & sce$Sox2
+sce$MPC <- sce$Bra & sce$ Msgn1 & sce$Tbx6
+sce$PSM <- !sce$Bra & sce$Msgn1 & sce$Tbx6
+
+# Rename and reorder reduced dimensions
+reducedDimNames(sce) <- c("MNN", "PCA", "TSNE", "UMAP")
+reducedDims(sce) <- reducedDims(sce)[c("PCA", "MNN", "TSNE", "UMAP")]
+
+# Define column data colours
+celltype_colours <- function(n) {
+  c(
+    "Allantois" = "#532C8A",
+    "Anterior Primitive Streak" = "#C19F70",
+    "Blood progenitors 1" = "#D9DECF",
+    "Blood progenitors 2" = "#C9A997",
+    "Cardiomyocytes" = "#B51D8D",
+    "Caudal epiblast" = "#9E6762",
+    "Caudal Mesoderm" = "#3F84AA",
+    "Caudal neurectoderm" = "#354E23",
+    "Def. endoderm" = "#F397C0",
+    "Endothelium" = "#FF891C",
+    "Epiblast" = "#635547",
+    "Erythroid1" = "#C72228",
+    "Erythroid2" = "#F79083",
+    "Erythroid3" = "#EF4E22",
+    "ExE ectoderm" = "#989898",
+    "ExE endoderm" = "#7F6874",
+    "ExE mesoderm" = "#8870AD",
+    "Forebrain/Midbrain/Hindbrain" = "#647A4F",
+    "Gut" = "#EF5A9D",
+    "Haematoendothelial progenitors" = "#FBBE92",
+    "Intermediate mesoderm" = "#139992",
+    "Mesenchyme" = "#CC7818",
+    "Mixed mesoderm" = "#DFCDE4",
+    "Nascent mesoderm" = "#C594BF",
+    "Neural crest" = "#C3C388",
+    "NMP" = "#8EC792",
+    "Notochord" = "#0F4A9C",
+    "Paraxial mesoderm" = "#8DB5CE",
+    "Parietal endoderm" = "#1A1A1A",
+    "PGC" = "#FACB12",
+    "Pharyngeal mesoderm" = "#C9EBFB",
+    "Primitive Streak" = "#DABE99",
+    "Rostral neurectoderm" = "#65A83E",
+    "Somitic mesoderm" = "#005579",
+    "Spinal cord" = "#CDE088",
+    "Surface ectoderm" = "#F7F79E",
+    "Visceral endoderm" = "#F6BFCB"
+  )
+}
+
+boolean_colours <- function(n) {
+  c("TRUE" = "#E15759", "FALSE" = "#BAB0AC")
+}
+
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
+
+# Define iSEE colours
+ecm <- ExperimentColorMap(
+  colData = list(
+    celltype = celltype_colours,
+    Bra = boolean_colours, 
+    Sox2 = boolean_colours, 
+    Meox1 = boolean_colours, 
+    Msgn1 = boolean_colours, 
+    Tbx6 = boolean_colours, 
+    NMP = boolean_colours, 
+    MPC = boolean_colours, 
+    PSM = boolean_colours, 
+  )
+)
+
+# Create iSEE object
+iSEE(sce, appTitle = "e-NMPs CLE (E8.5/E9.5) [MNN]", colormap = ecm)
+```
+
+Deploy the iSEE application to the shiny server:
+
+```{r}
+deployApp(appDir = "shiny", appName = "GOUTI_2017_NMP_MNN", appTitle = "e-NMPs CLE (E8.5/E9.5) [MNN]", launch.browser = FALSE, forceUpdate = TRUE)
+```
+
+Allocate more memory to the iSEE application:
+
+```{r}
+configureApp(appName = "GOUTI_2017_NMP_MNN", appDir = "shiny", size = "xlarge")
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
