@@ -559,16 +559,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong67806cd"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 67806cd </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong5a3c11b"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 5a3c11b </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong67806cd" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong5a3c11b" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 67806cd. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 5a3c11b. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -634,6 +634,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+5a3c11b
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+0efbf03
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -883,7 +917,7 @@ sce$Meox1 &lt;- counts(sce)[&quot;Meox1&quot;, ] &gt; 0
 sce$Msgn1 &lt;- counts(sce)[&quot;Msgn1&quot;, ] &gt; 0
 sce$Tbx6 &lt;- counts(sce)[&quot;Tbx6&quot;, ] &gt; 0
 sce$NMP &lt;- sce$Bra &amp; sce$Sox2
-sce$MPC &lt;- sce$Bra &amp; sce$ Msgn1 &amp; sce$Tbx6
+sce$MPC &lt;- sce$Bra &amp; sce$Msgn1 &amp; sce$Tbx6
 sce$PSM &lt;- !sce$Bra &amp; sce$Msgn1 &amp; sce$Tbx6
 
 # Rename and reorder reduced dimensions
@@ -962,16 +996,16 @@ iSEE(sce, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, colormap = ecm)</
 <pre class="r"><code>deployApp(appDir = &quot;shiny&quot;, appName = &quot;GOUTI_2017_NMP_MNN&quot;, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 4006097...DONE
-Deploying bundle: 4499859 for application: 4006097 ...
-Waiting for task: 915938226
-  building: Processing bundle: 4499859
+Deploying bundle: 4499875 for application: 4006097 ...
+Waiting for task: 915941251
+  building: Processing bundle: 4499875
   building: Parsing manifest
-  building: Building image: 5168459
+  building: Building image: 5168478
   building: Installing system dependencies
   building: Fetching packages
   building: Installing packages
   building: Installing files
-  building: Pushing image: 5168459
+  building: Pushing image: 5168478
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
@@ -979,7 +1013,7 @@ Application successfully deployed to https://jashmore.shinyapps.io/GOUTI_2017_NM
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;GOUTI_2017_NMP_MNN&quot;, appDir = &quot;shiny&quot;, size = &quot;xlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 915939731
+Waiting for task: 915943014
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
