@@ -214,7 +214,7 @@ Select optimal perplexity value and number of iterations:
 ```{r}
 set.seed(1100010100)
 
-sce <- runTSNE(sce, dimred = "corrected", perplexity = 31, max_iter = 1500)
+sce <- runTSNE(sce, dimred = "corrected", perplexity = 25, max_iter = 1500)
 ```
 
 ## UMAP
@@ -260,7 +260,7 @@ Select optimal number of nearest neighbors:
 ```{r}
 set.seed(1010100110)
 
-sce <- runUMAP(sce, dimred = "corrected", n_neighbors = 21, min_dist = 0.2)
+sce <- runUMAP(sce, dimred = "corrected", n_neighbors = 41, min_dist = 0.2)
 ```
 
 ## Variables {.tabset}
