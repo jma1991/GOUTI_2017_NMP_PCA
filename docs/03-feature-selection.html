@@ -396,25 +396,22 @@ div.tocify {
       <a href="03-feature-selection.html">Feature selection</a>
     </li>
     <li>
-      <a href="04-data-integration.html">Data integration</a>
+      <a href="04-reduced-dimensions.html">Dimensionality reduction</a>
     </li>
     <li>
-      <a href="05-reduced-dimensions.html">Dimensionality reduction</a>
+      <a href="05-clustering.html">Clustering</a>
     </li>
     <li>
-      <a href="06-clustering.html">Clustering</a>
+      <a href="06-doublet-detection.html">Doublet detection</a>
     </li>
     <li>
-      <a href="07-doublet-detection.html">Doublet detection</a>
+      <a href="07-cell-cycle.html">Cell cycle assignment</a>
     </li>
     <li>
-      <a href="08-cell-cycle.html">Cell cycle assignment</a>
+      <a href="08-marker-detection.html">Marker gene detection</a>
     </li>
     <li>
-      <a href="09-marker-detection.html">Marker gene detection</a>
-    </li>
-    <li>
-      <a href="10-cell-annotation.html">Cell type annotation</a>
+      <a href="09-cell-annotation.html">Cell type annotation</a>
     </li>
   </ul>
 </li>
@@ -474,7 +471,7 @@ div.tocify {
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
-<strong>Knit directory:</strong> <code>E-MTAB-5208/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+<strong>Knit directory:</strong> <code>unintegrated-analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
@@ -559,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongf8af743"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> f8af743 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong21907f6"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 21907f6 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongf8af743" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong21907f6" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version f8af743. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 21907f6. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -577,12 +574,11 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/cache/
-    Ignored:    pipeline/
-    Ignored:    shiny/
 
 Untracked files:
     Untracked:  _workflowr.R
-    Untracked:  analysis/rename.sh
+    Untracked:  analysis/08-marker-detection.Rmd
+    Untracked:  analysis/09-cell-annotation.Rmd
     Untracked:  code/cleanEmbryoAtlasData.R
     Untracked:  renv.lock
     Untracked:  renv/
@@ -591,10 +587,17 @@ Unstaged changes:
     Modified:   .Rprofile
     Modified:   .gitignore
     Modified:   _workflowr.yml
-    Deleted:    analysis/04-reduced-dimensions.Rmd
-    Deleted:    analysis/05-clustering.Rmd
-    Deleted:    analysis/06-doublet-detection.Rmd
-    Deleted:    analysis/07-cell-cycle.Rmd
+    Deleted:    analysis/04-data-integration.Rmd
+    Modified:   analysis/04-reduced-dimensions.Rmd
+    Modified:   analysis/05-clustering.Rmd
+    Deleted:    analysis/05-reduced-dimensions.Rmd
+    Deleted:    analysis/06-clustering.Rmd
+    Modified:   analysis/06-doublet-detection.Rmd
+    Modified:   analysis/07-cell-cycle.Rmd
+    Deleted:    analysis/07-doublet-detection.Rmd
+    Deleted:    analysis/08-cell-cycle.Rmd
+    Deleted:    analysis/09-marker-detection.Rmd
+    Deleted:    analysis/10-cell-annotation.Rmd
     Modified:   analysis/_site.yml
 
 </code></pre>
@@ -634,6 +637,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+21907f6
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+e9691a0
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1341,23 +1378,15 @@ rowData(sce)$blacklist[idx] &lt;- TRUE</code></pre>
 <div id="modelgenevar" class="section level3">
 <h3>modelGeneVar</h3>
 <p>Model the per-gene variance</p>
-<pre class="r"><code>dec &lt;- modelGeneVar(sce, block = sce$stage)
+<pre class="r"><code>dec &lt;- modelGeneVar(sce)
 
-ids &lt;- colnames(dec$per.block)
-
-plt &lt;- lapply(ids, function(i) {
+dat &lt;- as.data.frame(dec)
   
-  dat &lt;- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = &quot;grey&quot;) + 
-    geom_line(aes(y = tech)) + 
-    labs(title = i, x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)</code></pre>
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = &quot;grey&quot;) + 
+  geom_line(aes(y = tech)) + 
+  labs(x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
+  theme_minimal()</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
@@ -1383,6 +1412,17 @@ Date
 <tbody>
 <tr>
 <td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+<tr>
+<td>
 db982c5
 </td>
 <td>
@@ -1401,109 +1441,149 @@ James Ashmore
 <div id="modelgenecv2" class="section level3">
 <h3>modelGeneCV2</h3>
 <p>Model the per-gene CV2:</p>
-<pre class="r"><code>dec &lt;- modelGeneCV2(sce, block = sce$stage)
+<pre class="r"><code>dec &lt;- modelGeneCV2(sce)
 
-ids &lt;- colnames(dec$per.block)
-
-plt &lt;- lapply(ids, function(i) {
+dat &lt;- as.data.frame(dec)
   
-  dat &lt;- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = &quot;grey&quot;) + 
-    geom_line(aes(y = trend)) + 
-    scale_x_log10() + 
-    scale_y_log10() + 
-    labs(title = i, x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)</code></pre>
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = &quot;grey&quot;) + 
+  geom_line(aes(y = trend)) + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
+  theme_minimal()</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>metadata(sce)$modelGeneCV2 &lt;- dec</code></pre>
 </div>
 <div id="modelgenevarwithspikes" class="section level3">
 <h3>modelGeneVarWithSpikes</h3>
 <p>Model the per-gene variance with spike-ins:</p>
-<pre class="r"><code>dec &lt;- modelGeneVarWithSpikes(sce, spikes = &quot;spike&quot;, block = sce$stage)
+<pre class="r"><code>dec &lt;- modelGeneVarWithSpikes(sce, spikes = &quot;spike&quot;)
 
-ids &lt;- colnames(dec$per.block)
+alt &lt;- metadata(dec)
 
-plt &lt;- lapply(ids, function(i) {
-  
-  dat &lt;- dec$per.block[[i]]
-  
-  alt &lt;- metadata(dec)
-  
-  df1 &lt;- as.data.frame(dec)
-  
-  df2 &lt;- data.frame(mean = alt$mean, total = alt$var)
-  
-  ggplot(df1, aes(mean, total)) + 
-    geom_point(colour = &quot;grey&quot;) + 
-    geom_line(aes(mean, tech)) + 
-    geom_point(data = df2, aes(mean, total), colour = &quot;red&quot;) + 
-    labs(title = i, x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
-    theme_minimal()
+df1 &lt;- as.data.frame(dec)
 
-})
+df2 &lt;- data.frame(mean = alt$mean, total = alt$var)
+
+ggplot(df1, aes(mean, total)) + 
+  geom_point(colour = &quot;grey&quot;) + 
+  geom_line(aes(mean, tech)) + 
+  geom_point(data = df2, aes(mean, total), colour = &quot;red&quot;) + 
+  labs(x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
+  theme_minimal()
 
 metadata(sce)$modelGeneVarWithSpikes &lt;- dec</code></pre>
 </div>
 <div id="modelgenecv2withspikes" class="section level3">
 <h3>modelGeneCV2WithSpikes</h3>
 <p>Model the per-gene CV2 with spike-ins:</p>
-<pre class="r"><code>dec &lt;- modelGeneCV2WithSpikes(sce, spikes = &quot;spike&quot;, block = sce$stage)
+<pre class="r"><code>dec &lt;- modelGeneCV2WithSpikes(sce, spikes = &quot;spike&quot;)
 
-ids &lt;- colnames(dec$per.block)
+alt &lt;- metadata(dec)
 
-plt &lt;- lapply(ids, function(i) {
-  
-  dat &lt;- dec$per.block[[i]]
-  
-  alt &lt;- metadata(dat)
-  
-  df1 &lt;- as.data.frame(dat)
-  
-  df2 &lt;- data.frame(mean = alt$mean, cv2 = alt$cv2)
-  
-  ggplot(df1, aes(mean, total)) + 
-    geom_point(colour = &quot;grey&quot;) + 
-    geom_line(aes(mean, trend)) + 
-    geom_point(data = df2, aes(mean, cv2), colour = &quot;red&quot;) + 
-    scale_x_log10() + 
-    scale_y_log10() + 
-    labs(title = i, x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
-    theme_minimal()
-  
-})
+df1 &lt;- as.data.frame(dec)
 
-wrap_plots(plt)
+df2 &lt;- data.frame(mean = alt$mean, cv2 = alt$cv2)
+
+ggplot(df1, aes(mean, total)) + 
+  geom_point(colour = &quot;grey&quot;) + 
+  geom_line(aes(mean, trend)) + 
+  geom_point(data = df2, aes(mean, cv2), colour = &quot;red&quot;) + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
+  theme_minimal()
 
 metadata(sce)$modelGeneCV2WithSpikes &lt;- dec</code></pre>
 </div>
 <div id="modelgenevarbypoisson" class="section level3">
 <h3>modelGeneVarByPoisson</h3>
 <p>Model the per-gene variance with Poisson noise:</p>
-<pre class="r"><code>dec &lt;- modelGeneVarByPoisson(sce, block = sce$stage)
+<pre class="r"><code>dec &lt;- modelGeneVarByPoisson(sce)
 
-ids &lt;- colnames(dec$per.block)
-
-plt &lt;- lapply(ids, function(i) {
+dat &lt;- as.data.frame(dec)
   
-  dat &lt;- as.data.frame(dec$per.block[[i]])
-  
-  ggplot(dat, aes(mean, total)) + 
-    geom_point(colour = &quot;grey&quot;) + 
-    geom_line(aes(y = tech)) + 
-    labs(title = i, x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
-    theme_minimal()
-
-})
-
-wrap_plots(plt)</code></pre>
+ggplot(dat, aes(mean, total)) + 
+  geom_point(colour = &quot;grey&quot;) + 
+  geom_line(aes(y = tech)) + 
+  labs(x = &quot;Mean of log-expression&quot;, y = &quot;Variance of log-expression&quot;) + 
+  theme_minimal()</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>metadata(sce)$modelGeneVarByPoisson &lt;- dec</code></pre>
 </div>
 </div>
@@ -1526,6 +1606,43 @@ metadata(sce)$modelGeneVar$hvg &lt;- sel</code></pre>
 <p>Plot expression of highly variable genes:</p>
 <pre class="r"><code>plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="modelgenecv2-1" class="section level3">
 <h3>modelGeneCV2</h3>
@@ -1544,6 +1661,43 @@ metadata(sce)$modelGeneCV2$hvg &lt;- sel</code></pre>
 <p>Plot expression of highly variable genes:</p>
 <pre class="r"><code>plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="modelgenevarwithspikes-1" class="section level3">
 <h3>modelGeneVarWithSpikes</h3>
@@ -1620,6 +1774,17 @@ Date
 <tbody>
 <tr>
 <td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+<tr>
+<td>
 db982c5
 </td>
 <td>
@@ -1681,6 +1846,17 @@ Date
 <tbody>
 <tr>
 <td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+<tr>
+<td>
 db982c5
 </td>
 <td>
@@ -1718,6 +1894,43 @@ brk &lt;- seq(0, 1, length.out = 11)
 
 pheatmap(mat, color = col, breaks = brk)</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
+Past versions of unnamed-chunk-27-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-27-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="dimensionality-reduction" class="section level3 tabset">
 <h3 class="tabset">Dimensionality reduction</h3>
@@ -1766,6 +1979,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
 <tr>
 <td>
 040511d
@@ -1846,6 +2070,17 @@ Date
 <tbody>
 <tr>
 <td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+<tr>
+<td>
 040511d
 </td>
 <td>
@@ -1911,6 +2146,43 @@ James Ashmore
 
 patchwork::wrap_plots(plt, ncol = 2)</code></pre>
 <p><img src="figure/03-feature-selection.Rmd/unnamed-chunk-31-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-1">
+Past versions of unnamed-chunk-31-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-31-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+7fe686f
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1962,7 +2234,7 @@ other attached packages:
 [15] ensembldb_2.14.0            AnnotationFilter_1.14.0    
 [17] GenomicFeatures_1.42.1      AnnotationDbi_1.52.0       
 [19] Biobase_2.50.0              GenomicRanges_1.42.0       
-[21] GenomeInfoDb_1.26.2         IRanges_2.24.1             
+[21] GenomeInfoDb_1.26.7         IRanges_2.24.1             
 [23] S4Vectors_0.28.1            BiocGenerics_0.36.0        
 [25] BiocSingular_1.6.0          workflowr_1.6.2            
 
@@ -2009,7 +2281,7 @@ loaded via a namespace (and not attached):
  [79] GenomicAlignments_1.26.0  cowplot_1.1.1            
  [81] bit_4.0.4                 tidyselect_1.1.0         
  [83] magrittr_2.0.1            R6_2.5.0                 
- [85] generics_0.1.0            DelayedArray_0.16.1      
+ [85] generics_0.1.0            DelayedArray_0.16.3      
  [87] DBI_1.1.1                 pillar_1.4.7             
  [89] whisker_0.4               withr_2.4.1              
  [91] RCurl_1.98-1.2            tibble_3.0.6             
