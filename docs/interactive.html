@@ -559,16 +559,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong77a2c23"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 77a2c23 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong9376596"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 9376596 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong77a2c23" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong9376596" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 77a2c23. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 9376596. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -578,6 +578,7 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/cache/
     Ignored:    pipeline/
+    Ignored:    shiny/
 
 Untracked files:
     Untracked:  _workflowr.R
@@ -633,6 +634,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+9376596
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+e346848
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -717,7 +752,7 @@ library(iSEE)
 library(SingleCellExperiment)
 
 # Load experiment object
-sce &lt;- readRDS(&quot;output/10-cell-annotation.rds&quot;)
+sce &lt;- readRDS(&quot;data.rds&quot;)
 
 # Clear metadata list
 metadata(sce) &lt;- list()
@@ -825,17 +860,17 @@ iSEE(sce, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, colormap = ecm)</
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 4006097...</code></pre>
 <pre><code>Warning in fileDependencies.R(file): Failed to parse /private/var/folders/
-5r/s597hc5j3w93_x8_tn57w3g80000gn/T/RtmpGkwqdG/file74216cbc938b/app.R ;
+5r/s597hc5j3w93_x8_tn57w3g80000gn/T/RtmpEIfCn9/file7a67685fabf4/app.R ;
 dependencies in this file will not be discovered.</code></pre>
 <pre><code>DONE
-Deploying bundle: 4499670 for application: 4006097 ...
-Waiting for task: 915908276
-  building: Processing bundle: 4499670
+Deploying bundle: 4499752 for application: 4006097 ...
+Waiting for task: 915921532
+  building: Processing bundle: 4499752
   building: Parsing manifest
-  building: Building image: 5168247
+  building: Building image: 5168336
   building: Installing packages
   building: Installing files
-  building: Pushing image: 5168247
+  building: Pushing image: 5168336
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
@@ -843,7 +878,7 @@ Application successfully deployed to https://jashmore.shinyapps.io/GOUTI_2017_NM
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;GOUTI_2017_NMP_MNN&quot;, appDir = &quot;shiny&quot;, size = &quot;xlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 915908840
+Waiting for task: 915922169
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
