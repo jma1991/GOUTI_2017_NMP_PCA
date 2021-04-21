@@ -159,7 +159,7 @@ ecm <- ExperimentColorMap(
     Tbx6 = boolean_colours, 
     NMP = boolean_colours, 
     MPC = boolean_colours, 
-    PSM = boolean_colours, 
+    PSM = boolean_colours
   )
 )
 
