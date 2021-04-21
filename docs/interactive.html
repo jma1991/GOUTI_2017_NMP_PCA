@@ -556,16 +556,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronge9691a0"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> e9691a0 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronga250864"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> a250864 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstronge9691a0" class="panel-collapse collapse">
+<div id="strongRepositoryversionstronga250864" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version e9691a0. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version a250864. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -577,8 +577,6 @@ Ignored files:
 
 Untracked files:
     Untracked:  _workflowr.R
-    Untracked:  analysis/08-marker-detection.Rmd
-    Untracked:  analysis/09-cell-annotation.Rmd
     Untracked:  code/cleanEmbryoAtlasData.R
     Untracked:  renv.lock
     Untracked:  renv/
@@ -587,14 +585,9 @@ Unstaged changes:
     Modified:   .Rprofile
     Modified:   .gitignore
     Modified:   _workflowr.yml
-    Modified:   analysis/03-feature-selection.Rmd
     Deleted:    analysis/04-data-integration.Rmd
-    Modified:   analysis/04-reduced-dimensions.Rmd
-    Modified:   analysis/05-clustering.Rmd
     Deleted:    analysis/05-reduced-dimensions.Rmd
     Deleted:    analysis/06-clustering.Rmd
-    Modified:   analysis/06-doublet-detection.Rmd
-    Modified:   analysis/07-cell-cycle.Rmd
     Deleted:    analysis/07-doublet-detection.Rmd
     Deleted:    analysis/08-cell-cycle.Rmd
     Deleted:    analysis/09-marker-detection.Rmd
@@ -638,6 +631,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+a250864
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+a475b9d
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-21
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -969,7 +996,7 @@ Build
 <div id="application" class="section level2 tabset">
 <h2 class="tabset">Application</h2>
 <p>Copy data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/10-cell-annotation.rds&quot;, &quot;shiny/data.rds&quot;, overwrite = TRUE)</code></pre>
+<pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/data.rds&quot;, overwrite = TRUE)</code></pre>
 <p>Write code to iSEE application file:</p>
 <pre class="r r"><code># Load required packages
 library(iSEE)
@@ -981,12 +1008,6 @@ sce &lt;- readRDS(&quot;data.rds&quot;)
 
 # Clear metadata list
 metadata(sce) &lt;- list()
-
-# ReOrder assays
-assays(sce) &lt;- assays(sce)[c(&quot;counts&quot;, &quot;logcounts&quot;, &quot;reconstructed&quot;)]
-
-# Rescale reconstructed assay
-assay(sce, &quot;rescaled&quot;) &lt;- scales::rescale(x = as.matrix(assay(sce, &quot;reconstructed&quot;)), to = c(0, 100))
 
 # Redefine Brachyury feature name
 ind &lt;- which(rowData(sce)$gene_id == &quot;ENSMUSG00000062327&quot;)
@@ -1007,10 +1028,6 @@ sce$Tbx6 &lt;- counts(sce)[&quot;Tbx6&quot;, ] &gt; 0
 sce$NMP &lt;- sce$Bra &amp; sce$Sox2
 sce$MPC &lt;- sce$Bra &amp; sce$Msgn1 &amp; sce$Tbx6
 sce$PSM &lt;- !sce$Bra &amp; sce$Msgn1 &amp; sce$Tbx6
-
-# Rename and reorder reduced dimensions
-reducedDimNames(sce) &lt;- c(&quot;MNN&quot;, &quot;PCA&quot;, &quot;TSNE&quot;, &quot;UMAP&quot;)
-reducedDims(sce) &lt;- reducedDims(sce)[c(&quot;PCA&quot;, &quot;MNN&quot;, &quot;TSNE&quot;, &quot;UMAP&quot;)]
 
 # Define column data colours
 celltype_colours &lt;- function(n) {
@@ -1079,11 +1096,11 @@ ecm &lt;- ExperimentColorMap(
 )
 
 # Create iSEE object
-iSEE(sce, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, colormap = ecm)</code></pre>
+iSEE(sce, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [Unintegrated]&quot;, colormap = ecm)</code></pre>
 <p>Deploy the iSEE application to the shiny server:</p>
-<pre class="r"><code>deployApp(appDir = &quot;shiny&quot;, appName = &quot;GOUTI_2017_NMP_MNN&quot;, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [MNN]&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
+<pre class="r"><code>deployApp(appDir = &quot;shiny&quot;, appName = &quot;GOUTI_2017_NMP_PCA&quot;, appTitle = &quot;e-NMPs CLE (E8.5/E9.5) [Unintegrated]&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
-<pre class="r"><code>configureApp(appName = &quot;GOUTI_2017_NMP_MNN&quot;, appDir = &quot;shiny&quot;, size = &quot;xlarge&quot;)</code></pre>
+<pre class="r"><code>configureApp(appName = &quot;GOUTI_2017_NMP_PCA&quot;, appDir = &quot;shiny&quot;, size = &quot;xlarge&quot;)</code></pre>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
