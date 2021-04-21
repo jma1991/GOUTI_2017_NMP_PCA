@@ -23,14 +23,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
-library(BiocSingular)
-library(patchwork)
-library(pheatmap)
 library(scater)
 library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(patchwork)
+library(pheatmap)
 ```
 
 Read experiment data:
@@ -46,9 +51,9 @@ sce <- readRDS("output/03-feature-selection.rds")
 Perform a principal components analysis (PCA) on the expression data:
 
 ```{r}
-set.seed(0101011011)
+set.seed(350941161)
 
-sce <- runPCA(sce, subset_row = rowData(sce)$selected, BSPARAM = ExactParam())
+sce <- runPCA(sce, subset_row = rowData(sce)$selected, BSPARAM = BiocSingular::ExactParam())
 ```
 
 Cluster cells to help examine separation of clusters by principal components:
@@ -147,7 +152,7 @@ ggplot(dat, aes(n.pcs, n.clusters)) +
 Choose number of PCs to retain from the above analyses:
 
 ```{r}
-num <- 6
+num <- 5
 
 len <- seq_len(num)
 
@@ -159,7 +164,7 @@ reducedDim(sce, "PCA") <- dim[, len]
 Plot scatter matrix of retained PCs:
 
 ```{r, fig.height = 8, fig.width = 10}
-plotPCA(sce, colour_by = "cluster", shape_by = "stage", ncomponents = num) + theme(legend.position = "none")
+plotReducedDim(sce, dimred = "PCA", colour_by = "cluster", shape_by = "stage", ncomponents = num) + theme(legend.position = "none")
 ```
 
 Cluster cells to help examine effect of TSNE and UMAP hyper-parameters:
@@ -217,7 +222,7 @@ Select optimal perplexity value and number of iterations:
 ```{r}
 set.seed(1100010100)
 
-sce <- runTSNE(sce, dimred = "PCA", perplexity = 31, max_iter = 1500)
+sce <- runTSNE(sce, dimred = "PCA", perplexity = 25, max_iter = 1500)
 ```
 
 ## UMAP
@@ -263,7 +268,7 @@ Select optimal number of nearest neighbors:
 ```{r}
 set.seed(1010100110)
 
-sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 21, min_dist = 0.2)
+sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 41, min_dist = 0.2)
 ```
 
 ## Variables {.tabset}
@@ -273,7 +278,7 @@ sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 21, min_dist = 0.2)
 ```{r, fig.height = 8, fig.width = 10}
 var <- c("sum", "detected", "subsets_MT_percent", "altexps_spike_percent")
 
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x, shape_by = "stage"))
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x, shape_by = "stage"))
 
 patchwork::wrap_plots(plt, ncol = 2)
 ```
