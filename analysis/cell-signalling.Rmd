@@ -51,7 +51,7 @@ library(CellChat)
 Read experiment object:
 
 ```{r}
-sce <- readRDS("output/10-cell-annotation.rds")
+sce <- readRDS("output/09-cell-annotation.rds")
 ```
 
 Make feature names unique:
